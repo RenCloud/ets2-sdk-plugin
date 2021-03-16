@@ -11,19 +11,19 @@ namespace SCSSdkClient {
     /// <summary>
     ///     Convert class
     /// </summary>
-    public class SCSSdkConvert {
-        private const int StringSize = 64;
-        private const int WheelSize = 16;
-        private const int Substances = 25;
+    public class ScsSdkConvert {
+        private const int _stringSize = 64;
+        private const int _wheelSize = 16;
+        private const int _substances = 25;
 
 
-        private readonly int[] _offsetAreas =
+        private readonly int[] offsetAreas =
             {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
 
-        private byte[] _data;
-        private int _offset;
+        private byte[] data;
+        private int offset;
 
-        private int _offsetArea;
+        private int offsetArea;
 
         /// <summary>
         ///     Convert the Shared Memory Byte data structure in a C# object
@@ -34,13 +34,13 @@ namespace SCSSdkClient {
         /// <returns>
         ///     C# object with game data of the shared memory
         /// </returns>
-        public SCSTelemetry Convert(byte[] structureDataBytes) {
-            _offsetArea = 0;
+        public ScsTelemetry Convert(byte[] structureDataBytes) {
+            offsetArea = 0;
             SetOffset();
 
 
-            _data = structureDataBytes;
-            var retData = new SCSTelemetry();
+            data = structureDataBytes;
+            var retData = new ScsTelemetry();
 
             #region FIRST ZONE 
 
@@ -63,7 +63,7 @@ namespace SCSSdkClient {
             retData.DllVersion = GetUint();
             retData.GameVersion.Major = GetUint();
             retData.GameVersion.Minor = GetUint();
-            retData.Game = GetUint().ToEnum<SCSGame>();
+            retData.Game = GetUint().ToEnum<ScsGame>();
             retData.TelemetryVersion.Major = GetUint();
             retData.TelemetryVersion.Minor = GetUint();
 
@@ -83,16 +83,16 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel = GetUint();
             retData.TruckValues.CurrentValues.LightsValues.AuxFront = GetUint().ToEnum<AuxLevel>();
             retData.TruckValues.CurrentValues.LightsValues.AuxRoof = GetUint().ToEnum<AuxLevel>();
-            retData.TruckValues.CurrentValues.WheelsValues.Substance = GetUintArray(WheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.Substance = GetUintArray(_wheelSize);
 
             retData.TruckValues.ConstantsValues.MotorValues.SlotHandlePosition = GetUintArray(32);
             retData.TruckValues.ConstantsValues.MotorValues.SlotSelectors = GetUintArray(32);
 
             retData.GamePlay.JobDelivered.DeliveryTime = GetUint();
-            var jobStartingTime = new SCSTelemetry.Time(GetUint());
+            var jobStartingTime = new ScsTelemetry.Time(GetUint());
             retData.GamePlay.JobCancelled.Started = jobStartingTime;
             retData.GamePlay.JobDelivered.Started = jobStartingTime;
-            var jobFinishingTime = new SCSTelemetry.Time(GetUint());
+            var jobFinishingTime = new ScsTelemetry.Time(GetUint());
             retData.GamePlay.JobCancelled.Finished = jobFinishingTime;
             retData.GamePlay.JobDelivered.Finished = jobFinishingTime;
 
@@ -130,13 +130,13 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.EngineRpmMax = GetFloat();
             retData.TruckValues.ConstantsValues.MotorValues.DifferentialRation = GetFloat();
             retData.JobValues.CargoValues.Mass = GetFloat();
-            retData.TruckValues.ConstantsValues.WheelsValues.Radius = GetFloatArray(WheelSize);
+            retData.TruckValues.ConstantsValues.WheelsValues.Radius = GetFloatArray(_wheelSize);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosForward = GetFloatArray(24);
             retData.TruckValues.ConstantsValues.MotorValues.GearRatiosReverse = GetFloatArray(8);
             retData.JobValues.CargoValues.UnitMass = GetFloat();
 
             retData.TruckValues.CurrentValues.DashboardValues.Speed.Value = GetFloat();
-            retData.TruckValues.CurrentValues.DashboardValues.RPM = GetFloat();
+            retData.TruckValues.CurrentValues.DashboardValues.Rpm = GetFloat();
             retData.ControlValues.InputValues.Steering = GetFloat();
             retData.ControlValues.InputValues.Throttle = GetFloat();
             retData.ControlValues.InputValues.Brake = GetFloat();
@@ -168,12 +168,12 @@ namespace SCSSdkClient {
             retData.NavigationValues.NavigationDistance = GetFloat();
             retData.NavigationValues.NavigationTime = GetFloat();
             retData.NavigationValues.SpeedLimit = GetFloat();
-            retData.TruckValues.CurrentValues.WheelsValues.SuspDeflection = GetFloatArray(WheelSize);
-            retData.TruckValues.CurrentValues.WheelsValues.Velocity = GetFloatArray(WheelSize);
-            retData.TruckValues.CurrentValues.WheelsValues.Steering = GetFloatArray(WheelSize);
-            retData.TruckValues.CurrentValues.WheelsValues.Rotation = GetFloatArray(WheelSize);
-            retData.TruckValues.CurrentValues.WheelsValues.Lift = GetFloatArray(WheelSize);
-            retData.TruckValues.CurrentValues.WheelsValues.LiftOffset = GetFloatArray(WheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.SuspDeflection = GetFloatArray(_wheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.Velocity = GetFloatArray(_wheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.Steering = GetFloatArray(_wheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.Rotation = GetFloatArray(_wheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.Lift = GetFloatArray(_wheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.LiftOffset = GetFloatArray(_wheelSize);
 
             retData.GamePlay.JobDelivered.CargoDamage = GetFloat();
             retData.GamePlay.JobDelivered.DistanceKm = GetFloat();
@@ -188,10 +188,10 @@ namespace SCSSdkClient {
 
             #region 5Th ZONE
 
-            retData.TruckValues.ConstantsValues.WheelsValues.Steerable = GetBoolArray(WheelSize);
-            retData.TruckValues.ConstantsValues.WheelsValues.Simulated = GetBoolArray(WheelSize);
-            retData.TruckValues.ConstantsValues.WheelsValues.Powered = GetBoolArray(WheelSize);
-            retData.TruckValues.ConstantsValues.WheelsValues.Liftable = GetBoolArray(WheelSize);
+            retData.TruckValues.ConstantsValues.WheelsValues.Steerable = GetBoolArray(_wheelSize);
+            retData.TruckValues.ConstantsValues.WheelsValues.Simulated = GetBoolArray(_wheelSize);
+            retData.TruckValues.ConstantsValues.WheelsValues.Powered = GetBoolArray(_wheelSize);
+            retData.TruckValues.ConstantsValues.WheelsValues.Liftable = GetBoolArray(_wheelSize);
 
             retData.JobValues.CargoLoaded = GetBool();
             retData.JobValues.SpecialJob = GetBool();
@@ -220,7 +220,7 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.LightsValues.Brake = GetBool();
             retData.TruckValues.CurrentValues.LightsValues.Reverse = GetBool();
             retData.TruckValues.CurrentValues.DashboardValues.CruiseControl = GetBool();
-            retData.TruckValues.CurrentValues.WheelsValues.OnGround = GetBoolArray(WheelSize);
+            retData.TruckValues.CurrentValues.WheelsValues.OnGround = GetBoolArray(_wheelSize);
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSelector = GetBoolArray(2);
 
             retData.GamePlay.JobDelivered.AutoParked = GetBool();
@@ -235,16 +235,16 @@ namespace SCSSdkClient {
             retData.TruckValues.Positioning.Cabin = GetFVector();
             retData.TruckValues.Positioning.Head = GetFVector();
             retData.TruckValues.Positioning.Hook = GetFVector();
-            var tempPos = new SCSTelemetry.FVector[WheelSize];
-            for (var j = 0; j < WheelSize; j++) {
-                tempPos[j] = new SCSTelemetry.FVector {X = GetFloat()};
+            var tempPos = new ScsTelemetry.FVector[_wheelSize];
+            for (var j = 0; j < _wheelSize; j++) {
+                tempPos[j] = new ScsTelemetry.FVector {X = GetFloat()};
             }
 
-            for (var j = 0; j < WheelSize; j++) {
+            for (var j = 0; j < _wheelSize; j++) {
                 tempPos[j].Y = GetFloat();
             }
 
-            for (var j = 0; j < WheelSize; j++) {
+            for (var j = 0; j < _wheelSize; j++) {
                 tempPos[j].Z = GetFloat();
             }
 
@@ -364,7 +364,7 @@ namespace SCSSdkClient {
             retData.SpecialEventsValues.Train = GetBool();
 
             retData.SpecialEventsValues.Refuel = GetBool();
-            retData.SpecialEventsValues.RefuelPayed = GetBool();
+            retData.SpecialEventsValues.RefuelPaid = GetBool();
 
             NextOffsetArea();
 
@@ -372,10 +372,10 @@ namespace SCSSdkClient {
 
             #region 13TH ZONE
 
-            for (var i = 0; i < Substances; i++) {
+            for (var i = 0; i < _substances; i++) {
                 var tempSubstance = GetString();
                 if (tempSubstance.Length != 0) {
-                    retData.Substances.Add(new SCSTelemetry.Substance {Index = i, Value = tempSubstance});
+                    retData.Substances.Add(new ScsTelemetry.Substance {Index = i, Value = tempSubstance});
                 }
             }
 
@@ -394,88 +394,88 @@ namespace SCSSdkClient {
         }
 
         private bool GetBool() {
-            var temp = _data[_offset];
-            _offset++;
+            var temp = data[offset];
+            offset++;
             return temp > 0;
         }
 
         private uint GetUint() {
-            while (_offset % 4 != 0) {
-                _offset++;
+            while (offset % 4 != 0) {
+                offset++;
             }
 
-            var temp = (uint) ((_data[_offset + 3] << 24) |
-                               (_data[_offset + 2] << 16) |
-                               (_data[_offset + 1] << 8) |
-                               _data[_offset]);
-            _offset += 4;
+            var temp = (uint) ((data[offset + 3] << 24) |
+                               (data[offset + 2] << 16) |
+                               (data[offset + 1] << 8) |
+                               data[offset]);
+            offset += 4;
             return temp;
         }
 
         private float GetFloat() {
-            while (_offset % 4 != 0) {
-                _offset++;
+            while (offset % 4 != 0) {
+                offset++;
             }
 
-            var temp = new[] {_data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3]};
-            _offset += 4;
+            var temp = new[] {data[offset], data[offset + 1], data[offset + 2], data[offset + 3]};
+            offset += 4;
             return BitConverter.ToSingle(temp, 0);
         }
 
         private double GetDouble() {
-            while (_offset % 4 != 0) {
-                _offset++;
+            while (offset % 4 != 0) {
+                offset++;
             }
 
             var temp = new[] {
-                                 _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
-                                 _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
+                                 data[offset], data[offset + 1], data[offset + 2], data[offset + 3],
+                                 data[offset + 4], data[offset + 5], data[offset + 6], data[offset + 7]
                              };
-            _offset += 8;
+            offset += 8;
             return BitConverter.ToDouble(temp, 0);
         }
 
         private int GetInt() {
-            while (_offset % 4 != 0) {
-                _offset++;
+            while (offset % 4 != 0) {
+                offset++;
             }
 
-            var temp = (_data[_offset + 3] << 24) |
-                       (_data[_offset + 2] << 16) |
-                       (_data[_offset + 1] << 8) |
-                       _data[_offset];
-            _offset += 4;
+            var temp = (data[offset + 3] << 24) |
+                       (data[offset + 2] << 16) |
+                       (data[offset + 1] << 8) |
+                       data[offset];
+            offset += 4;
             return temp;
         }
 
         private byte[] GetSubArray(int length) {
             var ret = new byte[length];
             for (var i = 0; i < length; i++) {
-                ret[i] = _data[_offset + i];
+                ret[i] = data[offset + i];
             }
 
-            _offset += length;
+            offset += length;
             return ret;
         }
 
 
         private void NextOffsetArea() {
-            _offsetArea++;
+            offsetArea++;
             SetOffset();
         }
 
         private void SetOffset() {
             // Debug Fix?
-            if (_offsetArea >= _offsetAreas.Length) {
+            if (offsetArea >= offsetAreas.Length) {
                 return;
             }
 
-            _offset = _offsetAreas[_offsetArea];
+            offset = offsetAreas[offsetArea];
         }
 
-        private void SetOffset(int off) => _offset += off;
+        private void SetOffset(int off) => offset += off;
 
-        private string GetString(int length = StringSize) {
+        private string GetString(int length = _stringSize) {
             var area = GetSubArray(length);
             return Encoding.UTF8.GetString(area).Replace('\0', ' ').Trim();
         }
@@ -516,13 +516,13 @@ namespace SCSSdkClient {
             return res;
         }
 
-        private SCSTelemetry.FVector GetFVector() => new SCSTelemetry.FVector
+        private ScsTelemetry.FVector GetFVector() => new ScsTelemetry.FVector
                                                      {X = GetFloat(), Y = GetFloat(), Z = GetFloat()};
 
-        private SCSTelemetry.FVector[] GetFVectorArray(int length) {
-            var tempPos = new SCSTelemetry.FVector[length];
+        private ScsTelemetry.FVector[] GetFVectorArray(int length) {
+            var tempPos = new ScsTelemetry.FVector[length];
             for (var j = 0; j < length; j++) {
-                tempPos[j] = new SCSTelemetry.FVector {X = GetFloat()};
+                tempPos[j] = new ScsTelemetry.FVector {X = GetFloat()};
             }
 
             for (var j = 0; j < length; j++) {
@@ -536,42 +536,42 @@ namespace SCSSdkClient {
             return tempPos;
         }
 
-        private SCSTelemetry.DVector GetDVector() => new SCSTelemetry.DVector
+        private ScsTelemetry.DVector GetDVector() => new ScsTelemetry.DVector
                                                      {X = GetDouble(), Y = GetDouble(), Z = GetDouble()};
 
-        private SCSTelemetry.Euler GetEuler() => new SCSTelemetry.Euler
+        private ScsTelemetry.Euler GetEuler() => new ScsTelemetry.Euler
                                                  {Heading = GetFloat(), Pitch = GetFloat(), Roll = GetFloat()};
 
-        private SCSTelemetry.Euler GetDEuler() =>
-            new SCSTelemetry.Euler
+        private ScsTelemetry.Euler GetDEuler() =>
+            new ScsTelemetry.Euler
             {Heading = (float) GetDouble(), Pitch = (float) GetDouble(), Roll = (float) GetDouble()};
 
-        private SCSTelemetry.FPlacement GetFPlacement() => new SCSTelemetry.FPlacement
+        private ScsTelemetry.FPlacement GetFPlacement() => new ScsTelemetry.FPlacement
                                                            {Position = GetFVector(), Orientation = GetEuler()};
 
-        private SCSTelemetry.DPlacement GetDPlacement() => new SCSTelemetry.DPlacement
+        private ScsTelemetry.DPlacement GetDPlacement() => new ScsTelemetry.DPlacement
                                                            {Position = GetDVector(), Orientation = GetDEuler()};
 
         private long GetLong() {
             var temp = new[] {
-                                 _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
-                                 _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
+                                 data[offset], data[offset + 1], data[offset + 2], data[offset + 3],
+                                 data[offset + 4], data[offset + 5], data[offset + 6], data[offset + 7]
                              };
-            _offset += 8;
+            offset += 8;
             return BitConverter.ToInt64(temp, 0);
         }
 
         private ulong GetULong() {
             var temp = new[] {
-                                 _data[_offset], _data[_offset + 1], _data[_offset + 2], _data[_offset + 3],
-                                 _data[_offset + 4], _data[_offset + 5], _data[_offset + 6], _data[_offset + 7]
+                                 data[offset], data[offset + 1], data[offset + 2], data[offset + 3],
+                                 data[offset + 4], data[offset + 5], data[offset + 6], data[offset + 7]
                              };
-            _offset += 8;
+            offset += 8;
             return BitConverter.ToUInt64(temp, 0);
         }
 
-        private SCSTelemetry.Trailer[] GetTrailers() {
-            var trailer = new SCSTelemetry.Trailer[10];
+        private ScsTelemetry.Trailer[] GetTrailers() {
+            var trailer = new ScsTelemetry.Trailer[10];
             //TODO : only 1 for old game versions
             for (var i = 0; i < 10; i++) {
                 trailer[i] = GetTrailer();
@@ -580,16 +580,16 @@ namespace SCSSdkClient {
             return trailer;
         }
 
-        private SCSTelemetry.Trailer GetTrailer() {
-            var trailer = new SCSTelemetry.Trailer();
+        private ScsTelemetry.Trailer GetTrailer() {
+            var trailer = new ScsTelemetry.Trailer();
 
             #region bool Region
 
-            trailer.WheelsConstant.Steerable = GetBoolArray(WheelSize);
-            trailer.WheelsConstant.Simulated = GetBoolArray(WheelSize);
-            trailer.WheelsConstant.Powered = GetBoolArray(WheelSize);
-            trailer.WheelsConstant.Liftable = GetBoolArray(WheelSize);
-            trailer.Wheelvalues.OnGround = GetBoolArray(WheelSize);
+            trailer.WheelsConstant.Steerable = GetBoolArray(_wheelSize);
+            trailer.WheelsConstant.Simulated = GetBoolArray(_wheelSize);
+            trailer.WheelsConstant.Powered = GetBoolArray(_wheelSize);
+            trailer.WheelsConstant.Liftable = GetBoolArray(_wheelSize);
+            trailer.WheelValues.OnGround = GetBoolArray(_wheelSize);
             trailer.Attached = GetBool();
             SetOffset(3);
 
@@ -597,7 +597,7 @@ namespace SCSSdkClient {
 
             #region uint Region
 
-            trailer.Wheelvalues.Substance = GetUintArray(WheelSize);
+            trailer.WheelValues.Substance = GetUintArray(_wheelSize);
             trailer.WheelsConstant.Count = GetUint();
 
             #endregion Second Zone 84 - 151
@@ -607,14 +607,14 @@ namespace SCSSdkClient {
             trailer.DamageValues.Cargo = GetFloat();
             trailer.DamageValues.Chassis = GetFloat();
             trailer.DamageValues.Wheels = GetFloat();
-            trailer.Wheelvalues.SuspDeflection = GetFloatArray(WheelSize);
-            trailer.Wheelvalues.Velocity = GetFloatArray(WheelSize);
-            trailer.Wheelvalues.Steering = GetFloatArray(WheelSize);
-            trailer.Wheelvalues.Rotation = GetFloatArray(WheelSize);
-            trailer.Wheelvalues.Lift = GetFloatArray(WheelSize);
-            trailer.Wheelvalues.LiftOffset = GetFloatArray(WheelSize);
+            trailer.WheelValues.SuspDeflection = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Velocity = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Steering = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Rotation = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Lift = GetFloatArray(_wheelSize);
+            trailer.WheelValues.LiftOffset = GetFloatArray(_wheelSize);
 
-            trailer.WheelsConstant.Radius = GetFloatArray(WheelSize);
+            trailer.WheelsConstant.Radius = GetFloatArray(_wheelSize);
 
             #endregion Third Zone 152 - 611
 
@@ -627,7 +627,7 @@ namespace SCSSdkClient {
 
             trailer.Hook = GetFVector();
 
-            trailer.WheelsConstant.PositionValues = GetFVectorArray(WheelSize);
+            trailer.WheelsConstant.PositionValues = GetFVectorArray(_wheelSize);
 
             #endregion 4Th Zone 612 - 863
 

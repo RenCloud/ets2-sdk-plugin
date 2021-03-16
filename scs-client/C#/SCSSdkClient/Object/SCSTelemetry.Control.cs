@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     User Input value and value used by the game
         /// </summary>
@@ -27,7 +27,7 @@ namespace SCSSdkClient.Object {
 
             /// <inheritdoc />
             public override string ToString() =>
-                $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
+                $"Input Values:\n\t{InputValues.ToString().StringFormatter()}\nGame Values:\n\t{GameValues.ToString().StringFormatter()}";
 
             /// <summary>
             ///     Input value

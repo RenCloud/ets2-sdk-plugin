@@ -1,13 +1,16 @@
 ﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Contains a in-game speed value (m/s), Kph (Km/h) and Mph of a speed value
         /// </summary>
         public class Movement {
-            public Movement(float f) => Value = f;
+            private Movement(float f) => Value = f;
 
+            /// <summary>
+            /// Creates new <see cref="Movement"/> object
+            /// </summary>
             public Movement() { }
 
             /// <summary>
@@ -25,6 +28,11 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public float Mph => Value * 2.25f;
 
+            /// <summary>
+            /// Creates new <see cref="Movement"/> object from the provided meters/second value
+            /// </summary>
+            /// <param name="f">Speed in m/s</param>
+            /// <returns><see cref="Movement"/> object</returns>
             public static implicit operator Movement(float f) => new Movement(f);
         }
     }

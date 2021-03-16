@@ -10,22 +10,22 @@ namespace SCSSdkClient {
         /// <summary>
         ///     size of the shared memory in bytes
         /// </summary>
-        private const uint defaultMapSize = 32 * 1024;
+        private const uint _defaultMapSize = 32 * 1024;
 
         /// <summary>
         ///     holds the byte to object convert class
         /// </summary>
-        private readonly SCSSdkConvert _sdkconvert = new SCSSdkConvert();
+        private readonly ScsSdkConvert sdkConvert = new ScsSdkConvert();
 
         /// <summary>
         ///     memory mapped file
         /// </summary>
-        private MemoryMappedFile _memoryMappedHandle;
+        private MemoryMappedFile memoryMappedHandle;
 
         /// <summary>
         ///     memory mapped view accessor
         /// </summary>
-        private MemoryMappedViewAccessor _memoryMappedView;
+        private MemoryMappedViewAccessor memoryMappedView;
 
         /// <summary>
         ///     Could we create a memory view on the memory map
@@ -46,7 +46,7 @@ namespace SCSSdkClient {
         ///     create/connect to a shared memory file
         /// </summary>
         /// <param name="map">Map location string</param>
-        public void Connect(string map) => Connect(map, defaultMapSize);
+        public void Connect(string map) => Connect(map, _defaultMapSize);
 
         /// <summary>
         ///     create/connect to a shared memory file
@@ -65,8 +65,8 @@ namespace SCSSdkClient {
                 RawData = new byte[mapSize];
 
                 // Open the map and create a "memory view" at the begin (byte 0)
-                _memoryMappedHandle = MemoryMappedFile.CreateOrOpen(map, mapSize, MemoryMappedFileAccess.ReadWrite);
-                _memoryMappedView = _memoryMappedHandle.CreateViewAccessor(0, mapSize);
+                memoryMappedHandle = MemoryMappedFile.CreateOrOpen(map, mapSize, MemoryMappedFileAccess.ReadWrite);
+                memoryMappedView = memoryMappedHandle.CreateViewAccessor(0, mapSize);
 
                 // Mark as a success.
                 Hooked = true;
@@ -78,45 +78,43 @@ namespace SCSSdkClient {
         }
 
         /// <summary>
-        ///     close the memory view and handle
+        ///     Close the memory view and handle
         /// </summary>
         public void Disconnect() {
             Hooked = false;
 
-            _memoryMappedView.Dispose();
-            _memoryMappedHandle.Dispose();
+            memoryMappedView.Dispose();
+            memoryMappedHandle.Dispose();
         }
 
         /// <summary>
-        ///     read data from memory and update object
+        ///     Read data from memory and update object
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public SCSTelemetry Update<T>() {
+        /// <returns>The telemetry data</returns>
+        public ScsTelemetry UpdateData() {
             Update();
 
             // Convert the data to our object.
-            return ToObject<T>(RawData);
+            return ToObject(RawData);
         }
 
         /// <summary>
-        ///     reread data from memory view
+        ///     Re-read data from memory view
         /// </summary>
         public void Update() {
-            if (!Hooked || _memoryMappedView == null) {
+            if (!Hooked || memoryMappedView == null) {
                 return;
             }
 
             // Re-read data from the view.
-            _memoryMappedView.ReadArray(0, RawData, 0, RawData.Length);
+            memoryMappedView.ReadArray(0, RawData, 0, RawData.Length);
         }
 
         /// <summary>
         ///     Cast a set of bytes to a managed C# object.
         /// </summary>
-        /// <typeparam name="T">Managed C# object type</typeparam>
         /// <param name="structureDataBytes">Bytes array</param>
         /// <returns>Managed object from given bytes</returns>
-        protected SCSTelemetry ToObject<T>(byte[] structureDataBytes) => _sdkconvert.Convert(structureDataBytes);
+        private ScsTelemetry ToObject(byte[] structureDataBytes) => sdkConvert.Convert(structureDataBytes);
     }
 }

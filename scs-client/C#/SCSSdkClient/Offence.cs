@@ -3,26 +3,6 @@
     ///     Offence type
     /// </summary>
     public enum Offence {
-        ///About: Values
-        ///
-        /// NoValue                 - No Value from the sdk
-        /// Crash                   - Crash with another vehicle
-        /// Avoid_sleeping          - driver did not sleep
-        /// Wrong_way               - drive on the wrong side of the street
-        /// Speeding_camera         - drives to fast at a camera
-        /// No_lights               - drives without lights on
-        /// Red_signal              - ignores a red signal
-        /// Avoid-Weighting         - ignore weighting
-        /// Speeding                - drives to fast
-        /// Illegal_trailer         - carries a trailer that is not allowed in this area
-        /// Avoid_Inspection        - avoid inspection
-        /// Illegal_Border_Crossing - illegal border crossing
-        /// Hard_Shoulder_Violation - hard shoulder violation
-        /// Damaged_Vehicle_Usage   - damaged vehicle usage
-        /// Generic                 - some other generic fine
-
-
-
         /// <summary>
         ///     No Value from the sdk
         /// </summary>
@@ -36,32 +16,32 @@
         /// <summary>
         ///     driver did not sleep
         /// </summary>
-        Avoid_sleeping,
+        AvoidSleeping,
 
         /// <summary>
         ///     drive on the wrong side of the street
         /// </summary>
-        Wrong_way,
+        WrongWay,
 
         /// <summary>
         ///     drives to fast at a camera
         /// </summary>
-        Speeding_camera,
+        SpeedingCamera,
 
         /// <summary>
         ///     drives without lights on
         /// </summary>
-        No_lights,
+        NoLights,
 
         /// <summary>
         ///     ignores a red signal
         /// </summary>
-        Red_signal,
+        RedSignal,
 
         /// <summary>
         ///     ignore weighting
         /// </summary>
-        Avoid_weighting,
+        AvoidWeighting,
 
         /// <summary>
         ///     drives to fast
@@ -71,27 +51,27 @@
         /// <summary>
         ///     carries a trailer that is not allowed in this area
         /// </summary>
-        Illegal_trailer,
+        IllegalTrailer,
 
         /// <summary>
         ///     avoid an inspection
         /// </summary>
-        Avoid_Inspection,
+        AvoidInspection,
 
         /// <summary>
         ///     illegal border crossing
         /// </summary>
-        Illegal_Border_Crossing,
+        IllegalBorderCrossing,
 
         /// <summary>
         ///     Hard shoulder violation
         /// </summary>
-        Hard_Shoulder_Violation,
+        HardShoulderViolation,
 
         /// <summary>
         /// Damaged vehicle usage
         /// </summary>
-        Damaged_Vehicle_Usage,
+        DamagedVehicleUsage,
 
         /// <summary>
         ///     some other generic fine

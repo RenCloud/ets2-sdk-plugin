@@ -1,5 +1,5 @@
 ﻿namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Config values
@@ -61,8 +61,17 @@
                 /// </summary>
                 public string Name { get; internal set; }
 
+                /// <summary>
+                /// License plate on the truck
+                /// </summary>
                 public string LicensePlate { get; internal set; }
+                /// <summary>
+                /// Identifier of the license plate country
+                /// </summary>
                 public string LicensePlateCountryId { get; internal set; }
+                /// <summary>
+                /// Country on the license plate in local game language
+                /// </summary>
                 public string LicensePlateCountry { get; internal set; }
 
                 /// <summary>

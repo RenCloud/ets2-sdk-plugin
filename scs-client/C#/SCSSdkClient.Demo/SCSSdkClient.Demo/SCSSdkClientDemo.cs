@@ -10,14 +10,14 @@ namespace SCSSdkClient.Demo {
         /// <summary>
         ///     The SCSSdkTelemetry object
         /// </summary>
-        public SCSSdkTelemetry Telemetry;
+        public ScsSdkTelemetry Telemetry;
 
         private float fuel;
 
         /// <inheritdoc />
         public SCSSdkClientDemo() {
             InitializeComponent();
-            Telemetry = new SCSSdkTelemetry();
+            Telemetry = new ScsSdkTelemetry();
             Telemetry.Data += Telemetry_Data;
             Telemetry.JobStarted += TelemetryOnJobStarted;
 
@@ -29,7 +29,7 @@ namespace SCSSdkClient.Demo {
             Telemetry.Train += TelemetryTrain;
             Telemetry.RefuelStart += TelemetryRefuel;
             Telemetry.RefuelEnd += TelemetryRefuelEnd;
-            Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            Telemetry.RefuelPaid += TelemetryRefuelPaid;
 
 
             if (Telemetry.Error != null) {
@@ -68,12 +68,12 @@ namespace SCSSdkClient.Demo {
         private void TelemetryRefuel(object sender, EventArgs e) => rtb_fuel.Invoke((MethodInvoker)(()=>rtb_fuel.BackColor = Color.Green)); 
         private void TelemetryRefuelEnd(object sender, EventArgs e) =>  rtb_fuel.Invoke((MethodInvoker)(()=>rtb_fuel.BackColor = Color.Red));
 
-        private void TelemetryRefuelPayed(object sender, EventArgs e) {
-            MessageBox.Show("Fuel Payed: " + fuel);
+        private void TelemetryRefuelPaid(object sender, EventArgs e) {
+            MessageBox.Show("Fuel Paid: " + fuel);
         }
 
 
-        private void Telemetry_Data(SCSTelemetry data, bool updated) {
+        private void Telemetry_Data(ScsTelemetry data, bool updated) {
            if (!updated) return;
             try {
                 if (InvokeRequired) {
@@ -119,20 +119,20 @@ namespace SCSSdkClient.Demo {
                                  "\ttrain:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.Train}\n"+
                                  "\tRefuel Payed:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.RefuelPayed}\n";
+                                 $"\t\t\t{data.SpecialEventsValues.RefuelPaid}\n";
 
                 common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
                 truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);
                 trailer.Text =
-                    JsonConvert.SerializeObject(data.TrailerValues[0],
+                    JsonConvert.SerializeObject(data.TrailerValues,
                                                 Formatting
-                                                    .Indented); //TODO: UNTIL I WORK ON A BETTER DEMO SHOW ONLY TRAILER 0
+                                                    .Indented); // TODO better trailer display
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
                 gameplayevent.Text = JsonConvert.SerializeObject(data.GamePlay, Formatting.Indented);
-                rtb_fuel.Text = data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount + " "+ data.SpecialEventsValues.Refuel ;
+                rtb_fuel.Text = data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount + " "+ data.SpecialEventsValues.Refuel;
                 fuel = data.GamePlay.RefuelEvent.Amount; 
 
             } catch (Exception ex) {
@@ -142,11 +142,11 @@ namespace SCSSdkClient.Demo {
         }
 
         private void SCSSdkClientDemo_FormClosing(object sender, FormClosingEventArgs e) {
-            Telemetry.pause(); // that line make it possible, but not every application wants to ask the user to quit, need to see if i can change that, when not use the try catch and IGNORE it (nothing changed )
+            Telemetry.Pause(); // that line make it possible, but not every application wants to ask the user to quit, need to see if i can change that, when not use the try catch and IGNORE it (nothing changed )
             if (MessageBox.Show("Are you sure you want to quit?", "My Application", MessageBoxButtons.YesNo) ==
                 DialogResult.No) {
                 e.Cancel = true;
-                Telemetry.resume();
+                Telemetry.Resume();
                 return;
             }
 

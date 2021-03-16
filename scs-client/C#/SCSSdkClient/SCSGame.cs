@@ -2,7 +2,7 @@
     /// <summary>
     ///     Which game loaded the sdk?
     /// </summary>
-    public enum SCSGame {
+    public enum ScsGame {
         /// About: Values
         /// 
         /// Unknown     - Unknown Game, most of the telemetry data won't work

@@ -28,7 +28,7 @@ namespace SCSSdkClient {
         /// </summary>
         /// <param name="choob"></param>
         /// <returns></returns>
-        public static string StringFormater(this string choob) {
+        public static string StringFormatter(this string choob) {
             var result = "";
             for (var index = 0; index < choob.Length; index++) {
                 var cha = choob[index];
