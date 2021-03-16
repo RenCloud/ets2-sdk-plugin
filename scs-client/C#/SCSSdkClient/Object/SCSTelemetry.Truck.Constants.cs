@@ -1,5 +1,5 @@
 ﻿namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Config values

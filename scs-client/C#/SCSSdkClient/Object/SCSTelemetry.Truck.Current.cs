@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1570
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         public partial class Truck {
             /// <summary>
             ///     Values that are changing a lot oftener
@@ -259,7 +259,7 @@ namespace SCSSdkClient.Object {
                     /// <summary>
                     ///     RPM of the engine
                     /// </summary>
-                    public float RPM { get; internal set; }
+                    public float Rpm { get; internal set; }
 
                     /// <summary>
                     ///     The value of the odometer in km

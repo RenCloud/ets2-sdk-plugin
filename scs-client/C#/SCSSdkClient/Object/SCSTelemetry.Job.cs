@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Job values. Income, destination, source, etc.
         /// </summary>

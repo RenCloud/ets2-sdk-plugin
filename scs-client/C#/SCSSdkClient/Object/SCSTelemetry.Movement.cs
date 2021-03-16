@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Contains a in-game speed value (m/s), Kph (Km/h) and Mph of a speed value
         /// </summary>

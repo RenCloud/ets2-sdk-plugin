@@ -4,23 +4,23 @@ using SCSSdkClient.Object;
 
 //TODO: possible idea: check if ets is running and if not change update rate to infinity (why most of the user may not quit the application while ets is running)
 namespace SCSSdkClient {
-    public delegate void TelemetryData(SCSTelemetry data, bool newTimestamp);
+    public delegate void TelemetryData(ScsTelemetry data, bool newTimestamp);
 
     /// <summary>
     ///     Handle the SCSSdkTelemetry.
     ///     Currently IDisposable. Was implemented because of an error
     /// </summary>
-    public class SCSSdkTelemetry : IDisposable {
-        private const string DefaultSharedMemoryMap = "Local\\SCSTelemetry";
-        private const int DefaultUpdateInterval = 100;
-        private const int DefaultPausedUpdateInterval = 1000;
+    public class ScsSdkTelemetry : IDisposable {
+        private const string _defaultSharedMemoryMap = "Local\\SCSTelemetry";
+        private const int _defaultUpdateInterval = 100;
+        private const int _defaultPausedUpdateInterval = 1000;
 
         private int updateInterval;
 
         // todo: enhancement:  some way to set this value 
-        private readonly int pausedUpdateInterval = DefaultPausedUpdateInterval;
+        private readonly int pausedUpdateInterval = _defaultPausedUpdateInterval;
 
-        private Timer _updateTimer;
+        private Timer updateTimer;
 
         private ulong lastTime = 0xFFFFFFFFFFFFFFFF;
 
@@ -31,12 +31,12 @@ namespace SCSSdkClient {
             Log.SaveShutdown();
         }
 #else
-        public void Dispose() => _updateTimer?.Dispose();
+        public void Dispose() => updateTimer?.Dispose();
 
 #endif
 
 
-        private SharedMemory SharedMemory;
+        private SharedMemory sharedMemory;
 
         private bool wasOnJob;
         private bool wasConnected;
@@ -51,13 +51,13 @@ namespace SCSSdkClient {
         private bool refuelPayed;
         private bool wasPaused;
 
-        public SCSSdkTelemetry() => Setup(DefaultSharedMemoryMap, DefaultUpdateInterval);
+        public ScsSdkTelemetry() => Setup(_defaultSharedMemoryMap, _defaultUpdateInterval);
 
-        public SCSSdkTelemetry(string map) => Setup(map, DefaultUpdateInterval);
+        public ScsSdkTelemetry(string map) => Setup(map, _defaultUpdateInterval);
 
-        public SCSSdkTelemetry(int interval) => Setup(DefaultSharedMemoryMap, interval);
+        public ScsSdkTelemetry(int interval) => Setup(_defaultSharedMemoryMap, interval);
 
-        public SCSSdkTelemetry(string map, int interval) => Setup(map, interval);
+        public ScsSdkTelemetry(string map, int interval) => Setup(map, interval);
 
         public string Map { get; private set; }
         public int UpdateInterval => paused ? pausedUpdateInterval : updateInterval;
@@ -78,11 +78,11 @@ namespace SCSSdkClient {
         public event EventHandler RefuelEnd;
         public event EventHandler RefuelPayed;
 
-        public void pause() => _updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        public void pause() => updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
         public void resume() {
             var tsInterval = new TimeSpan(0, 0, 0, 0, UpdateInterval);
-            _updateTimer.Change(tsInterval, tsInterval);
+            updateTimer.Change(tsInterval, tsInterval);
         }
 
         /// <summary>
@@ -101,29 +101,29 @@ namespace SCSSdkClient {
             Map = map;
             updateInterval = interval;
 
-            SharedMemory = new SharedMemory();
-            SharedMemory.Connect(map);
+            sharedMemory = new SharedMemory();
+            sharedMemory.Connect(map);
 
-            if (!SharedMemory.Hooked) {
-                Error = SharedMemory.HookException;
+            if (!sharedMemory.Hooked) {
+                Error = sharedMemory.HookException;
                 return;
             }
 
             var tsInterval = new TimeSpan(0, 0, 0, 0, interval);
 
-            _updateTimer = new Timer(_updateTimer_Elapsed, null, tsInterval.Add(tsInterval), tsInterval);
+            updateTimer = new Timer(_updateTimer_Elapsed, null, tsInterval.Add(tsInterval), tsInterval);
 #if LOGGING
             Log.Write("Every thing is set up correctly and the timer was started");
 #endif
         }
 
         private void _updateTimer_Elapsed(object sender) {
-            var scsTelemetry = SharedMemory.Update<SCSTelemetry>();
+            var scsTelemetry = sharedMemory.Update<ScsTelemetry>();
             // check if sdk is NOT running
             if (!scsTelemetry.SdkActive && !paused) {
                 // if so don't check so often the data 
-                var tsInterval = new TimeSpan(0, 0, 0, 0, DefaultPausedUpdateInterval);
-                _updateTimer.Change(tsInterval.Add(tsInterval), tsInterval);
+                var tsInterval = new TimeSpan(0, 0, 0, 0, _defaultPausedUpdateInterval);
+                updateTimer.Change(tsInterval.Add(tsInterval), tsInterval);
                 paused = true;
                 // if sdk not active we don't need to do something
                 return;

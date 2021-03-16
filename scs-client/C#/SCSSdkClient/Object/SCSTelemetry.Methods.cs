@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Converts uint minutes in a DateTime object
         /// </summary>
@@ -66,9 +66,9 @@ namespace SCSSdkClient.Object {
         ///     rotated float vector
         /// </returns>
         public static FVector Rotate(Euler orientation, FVector vector) {
-            var headingRadians = orientation.Heading * PiTimes2;
-            var pitchRadians = orientation.Pitch * PiTimes2;
-            var rollRadians = orientation.Roll * PiTimes2;
+            var headingRadians = orientation.Heading * _piTimes2;
+            var pitchRadians = orientation.Pitch * _piTimes2;
+            var rollRadians = orientation.Roll * _piTimes2;
 
             var cosHeading = Math.Cos(headingRadians);
             var sinHeading = Math.Sin(headingRadians);

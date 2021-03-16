@@ -3,7 +3,7 @@
 #pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Represent a time object with time in minutes and a DateTime object
         /// </summary>

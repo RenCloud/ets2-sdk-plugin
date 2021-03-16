@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Gameplay Events that can be fired from the sdk (starting for game version 1.35+)
         ///     first implementation is that the values will be set, but never deleted

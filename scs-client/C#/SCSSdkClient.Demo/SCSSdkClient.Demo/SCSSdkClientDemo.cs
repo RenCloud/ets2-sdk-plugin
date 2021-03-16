@@ -10,14 +10,14 @@ namespace SCSSdkClient.Demo {
         /// <summary>
         ///     The SCSSdkTelemetry object
         /// </summary>
-        public SCSSdkTelemetry Telemetry;
+        public ScsSdkTelemetry Telemetry;
 
         private float fuel;
 
         /// <inheritdoc />
         public SCSSdkClientDemo() {
             InitializeComponent();
-            Telemetry = new SCSSdkTelemetry();
+            Telemetry = new ScsSdkTelemetry();
             Telemetry.Data += Telemetry_Data;
             Telemetry.JobStarted += TelemetryOnJobStarted;
 
@@ -73,7 +73,7 @@ namespace SCSSdkClient.Demo {
         }
 
 
-        private void Telemetry_Data(SCSTelemetry data, bool updated) {
+        private void Telemetry_Data(ScsTelemetry data, bool updated) {
            if (!updated) return;
             try {
                 if (InvokeRequired) {

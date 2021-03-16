@@ -1,5 +1,5 @@
 ﻿namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Contains names to substances in other fields
         /// </summary>

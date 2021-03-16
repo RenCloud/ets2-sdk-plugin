@@ -7,13 +7,13 @@ namespace SCSSdkClient.Object {
     ///     Telemetry Data of SCS SDK's
     /// </summary>
     //
-    public partial class SCSTelemetry {
-        private const float PiTimes2 = 6.2831853071795864769252867665590058f;
+    public partial class ScsTelemetry {
+        private const float _piTimes2 = 6.2831853071795864769252867665590058f;
 
         /// <summary>
         ///     initialise an SCSTelemetry object
         /// </summary>
-        public SCSTelemetry() {
+        public ScsTelemetry() {
             GameVersion = new Version();
             TelemetryVersion = new Version();
             TruckValues = new Truck();
@@ -98,8 +98,8 @@ namespace SCSSdkClient.Object {
         /// Game == SCSGame.Ats
         /// </code>
         /// </example>
-        /// <seealso cref="SCSGame" />
-        public SCSGame Game { get; internal set; }
+        /// <seealso cref="ScsGame" />
+        public ScsGame Game { get; internal set; }
 
         /// <summary>
         ///     Version of the game for purpose of the specific api which is being initialized.

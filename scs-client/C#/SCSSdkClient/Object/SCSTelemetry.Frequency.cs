@@ -3,7 +3,7 @@
 #pragma warning disable 1570
 
 namespace SCSSdkClient.Object {
-    public partial class SCSTelemetry {
+    public partial class ScsTelemetry {
         /// <summary>
         ///     Like Time object represent minutes and DateTime object, but represent more a timespan positive or negative
         /// </summary>

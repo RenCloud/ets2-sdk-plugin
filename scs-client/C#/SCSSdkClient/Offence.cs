@@ -36,32 +36,32 @@
         /// <summary>
         ///     driver did not sleep
         /// </summary>
-        Avoid_sleeping,
+        AvoidSleeping,
 
         /// <summary>
         ///     drive on the wrong side of the street
         /// </summary>
-        Wrong_way,
+        WrongWay,
 
         /// <summary>
         ///     drives to fast at a camera
         /// </summary>
-        Speeding_camera,
+        SpeedingCamera,
 
         /// <summary>
         ///     drives without lights on
         /// </summary>
-        No_lights,
+        NoLights,
 
         /// <summary>
         ///     ignores a red signal
         /// </summary>
-        Red_signal,
+        RedSignal,
 
         /// <summary>
         ///     ignore weighting
         /// </summary>
-        Avoid_weighting,
+        AvoidWeighting,
 
         /// <summary>
         ///     drives to fast
@@ -71,27 +71,27 @@
         /// <summary>
         ///     carries a trailer that is not allowed in this area
         /// </summary>
-        Illegal_trailer,
+        IllegalTrailer,
 
         /// <summary>
         ///     avoid an inspection
         /// </summary>
-        Avoid_Inspection,
+        AvoidInspection,
 
         /// <summary>
         ///     illegal border crossing
         /// </summary>
-        Illegal_Border_Crossing,
+        IllegalBorderCrossing,
 
         /// <summary>
         ///     Hard shoulder violation
         /// </summary>
-        Hard_Shoulder_Violation,
+        HardShoulderViolation,
 
         /// <summary>
         /// Damaged vehicle usage
         /// </summary>
-        Damaged_Vehicle_Usage,
+        DamagedVehicleUsage,
 
         /// <summary>
         ///     some other generic fine
