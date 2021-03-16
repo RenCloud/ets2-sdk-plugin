@@ -551,6 +551,9 @@ namespace SCSSdkClient.Object {
                     public float WheelsAvg { get; internal set; }
                 }
 
+                /// <summary>
+                /// Acceleration class
+                /// </summary>
                 public class Acceleration {
                     /// <summary>
                     ///     Represents vehicle space linear velocity of the truck measured in m/s

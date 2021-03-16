@@ -364,7 +364,7 @@ namespace SCSSdkClient {
             retData.SpecialEventsValues.Train = GetBool();
 
             retData.SpecialEventsValues.Refuel = GetBool();
-            retData.SpecialEventsValues.RefuelPayed = GetBool();
+            retData.SpecialEventsValues.RefuelPaid = GetBool();
 
             NextOffsetArea();
 

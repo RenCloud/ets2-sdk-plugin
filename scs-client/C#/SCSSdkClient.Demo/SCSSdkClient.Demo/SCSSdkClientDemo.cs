@@ -29,7 +29,7 @@ namespace SCSSdkClient.Demo {
             Telemetry.Train += TelemetryTrain;
             Telemetry.RefuelStart += TelemetryRefuel;
             Telemetry.RefuelEnd += TelemetryRefuelEnd;
-            Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            Telemetry.RefuelPaid += TelemetryRefuelPaid;
 
 
             if (Telemetry.Error != null) {
@@ -68,7 +68,7 @@ namespace SCSSdkClient.Demo {
         private void TelemetryRefuel(object sender, EventArgs e) => rtb_fuel.Invoke((MethodInvoker)(()=>rtb_fuel.BackColor = Color.Green)); 
         private void TelemetryRefuelEnd(object sender, EventArgs e) =>  rtb_fuel.Invoke((MethodInvoker)(()=>rtb_fuel.BackColor = Color.Red));
 
-        private void TelemetryRefuelPayed(object sender, EventArgs e) {
+        private void TelemetryRefuelPaid(object sender, EventArgs e) {
             MessageBox.Show("Fuel Payed: " + fuel);
         }
 
@@ -119,7 +119,7 @@ namespace SCSSdkClient.Demo {
                                  "\ttrain:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.Train}\n"+
                                  "\tRefuel Payed:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.RefuelPayed}\n";
+                                 $"\t\t\t{data.SpecialEventsValues.RefuelPaid}\n";
 
                 common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
                 truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);
@@ -142,11 +142,11 @@ namespace SCSSdkClient.Demo {
         }
 
         private void SCSSdkClientDemo_FormClosing(object sender, FormClosingEventArgs e) {
-            Telemetry.pause(); // that line make it possible, but not every application wants to ask the user to quit, need to see if i can change that, when not use the try catch and IGNORE it (nothing changed )
+            Telemetry.Pause(); // that line make it possible, but not every application wants to ask the user to quit, need to see if i can change that, when not use the try catch and IGNORE it (nothing changed )
             if (MessageBox.Show("Are you sure you want to quit?", "My Application", MessageBoxButtons.YesNo) ==
                 DialogResult.No) {
                 e.Cancel = true;
-                Telemetry.resume();
+                Telemetry.Resume();
                 return;
             }
 

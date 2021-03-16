@@ -31,6 +31,7 @@ namespace SCSSdkClient {
             Log.SaveShutdown();
         }
 #else
+        /// <inheritdoc />
         public void Dispose() => updateTimer?.Dispose();
 
 #endif
@@ -76,11 +77,17 @@ namespace SCSSdkClient {
         public event EventHandler Train;
         public event EventHandler RefuelStart;
         public event EventHandler RefuelEnd;
-        public event EventHandler RefuelPayed;
+        public event EventHandler RefuelPaid;
 
-        public void pause() => updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        /// <summary>
+        /// 'Stops' the update until the game is unpaused to save resources
+        /// </summary>
+        public void Pause() => updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-        public void resume() {
+        /// <summary>
+        /// Lowers the delay between updates
+        /// </summary>
+        public void Resume() {
             var tsInterval = new TimeSpan(0, 0, 0, 0, UpdateInterval);
             updateTimer.Change(tsInterval, tsInterval);
         }
@@ -132,7 +139,7 @@ namespace SCSSdkClient {
             if (paused && scsTelemetry.SdkActive) {
                 // ok sdk is active now
                 paused = false;
-                resume(); // going back to normal update rate
+                Resume(); // going back to normal update rate
             }
 
             var time = scsTelemetry.Timestamp;
@@ -230,10 +237,10 @@ namespace SCSSdkClient {
                 }
             }
 
-            if (refuelPayed != scsTelemetry.SpecialEventsValues.RefuelPayed) {
-                refuelPayed = scsTelemetry.SpecialEventsValues.RefuelPayed;
-                if (scsTelemetry.SpecialEventsValues.RefuelPayed) {
-                    RefuelPayed?.Invoke(this, new EventArgs());
+            if (refuelPayed != scsTelemetry.SpecialEventsValues.RefuelPaid) {
+                refuelPayed = scsTelemetry.SpecialEventsValues.RefuelPaid;
+                if (scsTelemetry.SpecialEventsValues.RefuelPaid) {
+                    RefuelPaid?.Invoke(this, new EventArgs());
                 }
             }
 

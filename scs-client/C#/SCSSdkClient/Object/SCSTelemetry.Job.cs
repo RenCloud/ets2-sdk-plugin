@@ -31,8 +31,17 @@ namespace SCSSdkClient.Object {
             /// <!----> **INFORMATION** <!---->
             public Frequency RemainingDeliveryTime { get; protected internal set; }
 
+            /// <summary>
+            /// Flag if cargo was loaded
+            /// </summary>
             public bool CargoLoaded { get; internal set; }
+            /// <summary>
+            /// Flag if cargo is a special job (oversize)
+            /// </summary>
             public bool SpecialJob { get; internal set; }
+            /// <summary>
+            /// Market of the cargo
+            /// </summary>
             public JobMarket Market { get; internal set; }
 
             /// <summary>
@@ -132,6 +141,9 @@ namespace SCSSdkClient.Object {
                 /// </summary>
                 public float UnitMass { get; internal set; }
 
+                /// <summary>
+                /// Damage dealt to the cargo
+                /// </summary>
                 public float CargoDamage { get; internal set; }
             }
         }

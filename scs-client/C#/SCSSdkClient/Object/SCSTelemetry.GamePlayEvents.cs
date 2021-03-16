@@ -48,6 +48,9 @@ namespace SCSSdkClient.Object {
                 public long Revenue{ get; internal set; }
                 public Time Finished{ get; internal set; }
                 public Time Started{ get; internal set; }
+                /// <summary>
+                /// Alternate value for <see cref="Started"/>
+                /// </summary>
                 public Time StartedBackup => Finished - DeliveryTime;
             }
 

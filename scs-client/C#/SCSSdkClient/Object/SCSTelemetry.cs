@@ -163,8 +163,14 @@ namespace SCSSdkClient.Object {
         /// </summary>
         public List<Substance> Substances { get; internal set; }
 
+        /// <summary>
+        /// Maximum amount of available trailers
+        /// </summary>
         public uint MaxTrailerCount { get; internal set; }
 
+        /// <summary>
+        /// Information about current in-game events
+        /// </summary>
         public GamePlayEvents GamePlay { get; internal set; }
     }
 }
