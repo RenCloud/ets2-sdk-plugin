@@ -10,7 +10,7 @@ namespace SCSSdkClient.Object {
             ///     Initialise a trailer object
             /// </summary>
             public Trailer() {
-                Wheelvalues = new Wheels();
+                WheelValues = new WheelsData();
                 AccelerationValues = new Acceleration();
                 WheelsConstant = new WheelsConstants();
                 Hook = new FVector();
@@ -27,13 +27,16 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public FVector Hook { get; internal set; }
 
+            /// <summary>
+            /// Information about damages
+            /// </summary>
             public Damage DamageValues { get; internal set; }
 
             /// <summary>
             ///     Current wheel values of the trailer, like rotation , substance, ...
-            ///     <seealso cref="Wheels" /> for more information
+            ///     <seealso cref="WheelsData" /> for more information
             /// </summary>
-            public Wheels Wheelvalues { get; internal set; }
+            public WheelsData WheelValues { get; internal set; }
 
             /// <summary>
             ///     Constant wheel values like Count, Radius,  ...
@@ -43,7 +46,7 @@ namespace SCSSdkClient.Object {
 
             /// <summary>
             ///     Acceleration values of the trailer
-            ///     <seealso cref="Acceleration" /> for more informaiton
+            ///     <seealso cref="Acceleration" /> for more informatiton
             /// </summary>
             public Acceleration AccelerationValues { get; internal set; }
 
@@ -64,111 +67,61 @@ namespace SCSSdkClient.Object {
             /// </summary>
             public string CargoAccessoryId { get; internal set; }
 
+            /// <summary>
+            /// Type of the body
+            /// </summary>
             public string BodyType { get; internal set; }
+            /// <summary>
+            /// ID of the trailer brand
+            /// </summary>
             public string BrandId { get; internal set; }
+            /// <summary>
+            /// Localized brand of the trailer
+            /// </summary>
             public string Brand { get; internal set; }
+            /// <summary>
+            /// Name of the trailer
+            /// </summary>
             public string Name { get; internal set; }
+            /// <summary>
+            /// Chain type of the trailer (single, double, etc)
+            /// </summary>
             public string ChainType { get; internal set; }
+            /// <summary>
+            /// License plate on the trailer
+            /// </summary>
             public string LicensePlate { get; internal set; }
+            /// <summary>
+            /// Localized country of the license plate
+            /// </summary>
             public string LicensePlateCountry { get; internal set; }
+            /// <summary>
+            /// ID of the license plate
+            /// </summary>
             public string LicensePlateCountryId { get; internal set; }
 
 
+            /// <summary>
+            /// Holds information about the damages
+            /// </summary>
             public class Damage {
+                /// <summary>
+                /// Damage of the cargo
+                /// </summary>
                 public float Cargo { get; internal set; }
+                /// <summary>
+                /// Damage of the wheels
+                /// </summary>
                 public float Wheels { get; internal set; }
+                /// <summary>
+                /// Damage of the chassis
+                /// </summary>
                 public float Chassis { get; internal set; }
             }
 
-
             /// <summary>
-            ///     States of the Wheels
+            /// Holds acceleration information
             /// </summary>
-            public class Wheels {
-                /// About: Velocity
-                /// Positive velocity corresponds to forward movement
-              
-                /// About: Steering
-                /// Value is from
-                /// <0.25, 0.25>
-                /// range in counterclockwise direction
-                /// when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
-                /// 
-                /// Set to zero for non-steered wheels
-                
-                /// About: Rotation
-                /// Value is from
-                /// <0.0, 1.0) range in which value increase corresponds to forward movement
-               
-                /// About: Lift
-                /// For use with simple lifted/ non-lifted test or logical visualization of the lifting progress.
-                ///  
-                /// - Value of 0 corresponds to non-lifted axle.
-                /// - Value of 1 corresponds to fully lifted axle.
-                /// Set to zero or not provided for non-liftable axles.
-                 
-                /// About: LiftOffset
-                /// Might have non-linear relation to lift ratio.
-                /// Set to zero or not provided for non-liftable axles.
-                 
-                /// <summary>
-                ///     Substance below the wheel
-                /// </summary>
-                public uint[] Substance { get; internal set; }
-
-                /// <summary>
-                ///     Vertical displacement of the wheel from its axis in meters
-                /// </summary>
-                public float[] SuspDeflection { get; internal set; }
-
-                /// <summary>
-                ///     Angular velocity of the wheel in rotations per second
-                /// </summary>
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                /// Positive velocity corresponds to forward movement
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                public float[] Velocity { get; internal set; }
-
-                /// <summary>
-                ///     Steering rotation of the wheel in rotations
-                /// </summary>
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                /// Value is from &lt;0.25,0.25&gt; range in counterclockwise direction when looking from top (e.g. 0.25 corresponds to left and -0.25 corresponds to right)
-                /// 
-                /// Set to zero for non-steered wheels
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                public float[] Steering { get; internal set; }
-
-                /// <summary>
-                ///     Rolling rotation of the wheel in rotations
-                /// </summary>
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                /// Value is from &lt;0.0,1.0) range in which value increase corresponds to forward movement
-                /// <!---->
-                /// **INFORMATION**
-                /// <!---->
-                public float[] Rotation { get; internal set; }
-
-                /// <summary>
-                ///     Is true if the wheel contacts the ground
-                /// </summary>
-                public bool[] OnGround { get; internal set; }
-
-                public float[] Lift { get; internal set; }
-                public float[] LiftOffset { get; internal set; }
-            }
-
-
             public class Acceleration {
                 /// <summary>
                 ///     Represents vehicle space linear velocity of the trailer measured in m/s

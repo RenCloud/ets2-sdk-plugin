@@ -59,6 +59,7 @@
     <Compile Include="Object\SCSTelemetry.Methods.cs" />
     <Compile Include="Object\SCSTelemetry.Substance.cs" />
     <Compile Include="Object\SCSTelemetry.Wheels.cs" />
+    <Compile Include="Object\WheelsData.cs" />
     <Compile Include="Offence.cs" />
     <Compile Include="SCSGame.cs" />
     <Compile Include="SCSSdkConvert.cs" />

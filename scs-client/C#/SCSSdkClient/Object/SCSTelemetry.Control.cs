@@ -27,7 +27,7 @@ namespace SCSSdkClient.Object {
 
             /// <inheritdoc />
             public override string ToString() =>
-                $"Input Values:\n\t{InputValues.ToString().StringFormater()}\nGame Values:\n\t{GameValues.ToString().StringFormater()}";
+                $"Input Values:\n\t{InputValues.ToString().StringFormatter()}\nGame Values:\n\t{GameValues.ToString().StringFormatter()}";
 
             /// <summary>
             ///     Input value

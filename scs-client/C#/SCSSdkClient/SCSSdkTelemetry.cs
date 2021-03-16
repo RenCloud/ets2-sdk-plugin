@@ -4,6 +4,11 @@ using SCSSdkClient.Object;
 
 //TODO: possible idea: check if ets is running and if not change update rate to infinity (why most of the user may not quit the application while ets is running)
 namespace SCSSdkClient {
+    /// <summary>
+    /// Called when telemetry data arrives
+    /// </summary>
+    /// <param name="data">Telemetry data</param>
+    /// <param name="newTimestamp">Flag if there is a new timestamp</param>
     public delegate void TelemetryData(ScsTelemetry data, bool newTimestamp);
 
     /// <summary>
@@ -18,7 +23,7 @@ namespace SCSSdkClient {
         private int updateInterval;
 
         // todo: enhancement:  some way to set this value 
-        private readonly int pausedUpdateInterval = _defaultPausedUpdateInterval;
+        private const int _pausedUpdateInterval = _defaultPausedUpdateInterval;
 
         private Timer updateTimer;
 
@@ -40,7 +45,7 @@ namespace SCSSdkClient {
         private SharedMemory sharedMemory;
 
         private bool wasOnJob;
-        private bool wasConnected;
+        //? private bool wasConnected; what was the use here?
         private bool cancelled;
         private bool delivered;
         private bool fined;
@@ -52,31 +57,93 @@ namespace SCSSdkClient {
         private bool refuelPayed;
         private bool wasPaused;
 
+        /// <summary>
+        ///     Set up SCS telemetry provider.
+        ///     Connects to shared memory map, sets up timebase.
+        /// </summary>
         public ScsSdkTelemetry() => Setup(_defaultSharedMemoryMap, _defaultUpdateInterval);
 
+        /// <summary>
+        ///     Set up SCS telemetry provider.
+        ///     Connects to shared memory map, sets up timebase.
+        /// </summary>
+        /// <param name="map">Memory Map location</param>
         public ScsSdkTelemetry(string map) => Setup(map, _defaultUpdateInterval);
 
+        /// <summary>
+        ///     Set up SCS telemetry provider.
+        ///     Connects to shared memory map, sets up timebase.
+        /// </summary>
+        /// <param name="interval">Timebase interval</param>
         public ScsSdkTelemetry(int interval) => Setup(_defaultSharedMemoryMap, interval);
 
+        /// <summary>
+        ///     Set up SCS telemetry provider.
+        ///     Connects to shared memory map, sets up timebase.
+        /// </summary>
+        /// <param name="map">Memory Map location</param>
+        /// <param name="interval">Timebase interval</param>
         public ScsSdkTelemetry(string map, int interval) => Setup(map, interval);
 
+        /// <summary>
+        /// Path of the Memory Mapped File
+        /// </summary>
         public string Map { get; private set; }
-        public int UpdateInterval => paused ? pausedUpdateInterval : updateInterval;
-
-
+        
+        /// <summary>
+        /// Current update interval 
+        /// </summary>
+        public int UpdateInterval => paused ? _pausedUpdateInterval : updateInterval;
+        
+        /// <summary>
+        /// Error of the telemetry receiver, if any 
+        /// </summary>
         public Exception Error { get; private set; }
 
+        /// <summary>
+        /// Raw data of the telemetry
+        /// </summary>
         public event TelemetryData Data;
 
+        /// <summary>
+        /// Event when job has been started
+        /// </summary>
         public event EventHandler JobStarted;
+        /// <summary>
+        /// Event when job has been cancelled
+        /// </summary>
         public event EventHandler JobCancelled;
+        /// <summary>
+        /// Event when job has been delivered
+        /// </summary>
         public event EventHandler JobDelivered;
+        /// <summary>
+        /// Event when player was fined
+        /// </summary>
         public event EventHandler Fined;
+        /// <summary>
+        /// Event when player paid in the tollgate
+        /// </summary>
         public event EventHandler Tollgate;
+        /// <summary>
+        /// Event when player travelled by ferry
+        /// </summary>
         public event EventHandler Ferry;
+        /// <summary>
+        /// Event when player travelled by train
+        /// </summary>
         public event EventHandler Train;
+        /// <summary>
+        /// Event when player started to refuel
+        /// </summary>
         public event EventHandler RefuelStart;
+        /// <summary>
+        /// Event when player finished refueling
+        /// </summary>
         public event EventHandler RefuelEnd;
+        /// <summary>
+        /// Event when player paid for the fuel
+        /// </summary>
         public event EventHandler RefuelPaid;
 
         /// <summary>
@@ -91,13 +158,7 @@ namespace SCSSdkClient {
             var tsInterval = new TimeSpan(0, 0, 0, 0, UpdateInterval);
             updateTimer.Change(tsInterval, tsInterval);
         }
-
-        /// <summary>
-        ///     Set up SCS telemetry provider.
-        ///     Connects to shared memory map, sets up timebase.
-        /// </summary>
-        /// <param name="map">Memory Map location</param>
-        /// <param name="interval">Timebase interval</param>
+        
         private void Setup(string map, int interval) {
 #if LOGGING
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

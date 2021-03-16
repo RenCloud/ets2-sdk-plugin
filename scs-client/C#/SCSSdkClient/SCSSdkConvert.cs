@@ -589,7 +589,7 @@ namespace SCSSdkClient {
             trailer.WheelsConstant.Simulated = GetBoolArray(_wheelSize);
             trailer.WheelsConstant.Powered = GetBoolArray(_wheelSize);
             trailer.WheelsConstant.Liftable = GetBoolArray(_wheelSize);
-            trailer.Wheelvalues.OnGround = GetBoolArray(_wheelSize);
+            trailer.WheelValues.OnGround = GetBoolArray(_wheelSize);
             trailer.Attached = GetBool();
             SetOffset(3);
 
@@ -597,7 +597,7 @@ namespace SCSSdkClient {
 
             #region uint Region
 
-            trailer.Wheelvalues.Substance = GetUintArray(_wheelSize);
+            trailer.WheelValues.Substance = GetUintArray(_wheelSize);
             trailer.WheelsConstant.Count = GetUint();
 
             #endregion Second Zone 84 - 151
@@ -607,12 +607,12 @@ namespace SCSSdkClient {
             trailer.DamageValues.Cargo = GetFloat();
             trailer.DamageValues.Chassis = GetFloat();
             trailer.DamageValues.Wheels = GetFloat();
-            trailer.Wheelvalues.SuspDeflection = GetFloatArray(_wheelSize);
-            trailer.Wheelvalues.Velocity = GetFloatArray(_wheelSize);
-            trailer.Wheelvalues.Steering = GetFloatArray(_wheelSize);
-            trailer.Wheelvalues.Rotation = GetFloatArray(_wheelSize);
-            trailer.Wheelvalues.Lift = GetFloatArray(_wheelSize);
-            trailer.Wheelvalues.LiftOffset = GetFloatArray(_wheelSize);
+            trailer.WheelValues.SuspDeflection = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Velocity = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Steering = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Rotation = GetFloatArray(_wheelSize);
+            trailer.WheelValues.Lift = GetFloatArray(_wheelSize);
+            trailer.WheelValues.LiftOffset = GetFloatArray(_wheelSize);
 
             trailer.WheelsConstant.Radius = GetFloatArray(_wheelSize);
 

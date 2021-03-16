@@ -15,7 +15,7 @@ namespace SCSSdkClient {
         /// <summary>
         ///     holds the byte to object convert class
         /// </summary>
-        private readonly ScsSdkConvert sdkconvert = new ScsSdkConvert();
+        private readonly ScsSdkConvert sdkConvert = new ScsSdkConvert();
 
         /// <summary>
         ///     memory mapped file
@@ -78,7 +78,7 @@ namespace SCSSdkClient {
         }
 
         /// <summary>
-        ///     close the memory view and handle
+        ///     Close the memory view and handle
         /// </summary>
         public void Disconnect() {
             Hooked = false;
@@ -88,9 +88,9 @@ namespace SCSSdkClient {
         }
 
         /// <summary>
-        ///     read data from memory and update object
+        ///     Read data from memory and update object
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The telemetry data</returns>
         public ScsTelemetry UpdateData() {
             Update();
 
@@ -99,7 +99,7 @@ namespace SCSSdkClient {
         }
 
         /// <summary>
-        ///     reread data from memory view
+        ///     Re-read data from memory view
         /// </summary>
         public void Update() {
             if (!Hooked || memoryMappedView == null) {
@@ -115,6 +115,6 @@ namespace SCSSdkClient {
         /// </summary>
         /// <param name="structureDataBytes">Bytes array</param>
         /// <returns>Managed object from given bytes</returns>
-        protected ScsTelemetry ToObject(byte[] structureDataBytes) => sdkconvert.Convert(structureDataBytes);
+        private ScsTelemetry ToObject(byte[] structureDataBytes) => sdkConvert.Convert(structureDataBytes);
     }
 }
