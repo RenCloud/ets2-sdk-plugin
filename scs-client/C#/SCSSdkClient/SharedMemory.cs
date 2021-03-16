@@ -90,13 +90,12 @@ namespace SCSSdkClient {
         /// <summary>
         ///     read data from memory and update object
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public ScsTelemetry Update<T>() {
+        public ScsTelemetry UpdateData() {
             Update();
 
             // Convert the data to our object.
-            return ToObject<T>(RawData);
+            return ToObject(RawData);
         }
 
         /// <summary>
@@ -114,9 +113,8 @@ namespace SCSSdkClient {
         /// <summary>
         ///     Cast a set of bytes to a managed C# object.
         /// </summary>
-        /// <typeparam name="T">Managed C# object type</typeparam>
         /// <param name="structureDataBytes">Bytes array</param>
         /// <returns>Managed object from given bytes</returns>
-        protected ScsTelemetry ToObject<T>(byte[] structureDataBytes) => sdkconvert.Convert(structureDataBytes);
+        protected ScsTelemetry ToObject(byte[] structureDataBytes) => sdkconvert.Convert(structureDataBytes);
     }
 }

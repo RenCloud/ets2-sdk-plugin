@@ -118,7 +118,7 @@ namespace SCSSdkClient {
         }
 
         private void _updateTimer_Elapsed(object sender) {
-            var scsTelemetry = sharedMemory.Update<ScsTelemetry>();
+            var scsTelemetry = sharedMemory.UpdateData();
             // check if sdk is NOT running
             if (!scsTelemetry.SdkActive && !paused) {
                 // if so don't check so often the data 
