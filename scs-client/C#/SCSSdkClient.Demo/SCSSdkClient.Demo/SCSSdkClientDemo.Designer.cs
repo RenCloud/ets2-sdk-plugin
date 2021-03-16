@@ -102,8 +102,7 @@
             // 
             // rtb_fuel
             // 
-            this.rtb_fuel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtb_fuel.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.rtb_fuel.Location = new System.Drawing.Point(20, 512);
             this.rtb_fuel.Name = "rtb_fuel";
             this.rtb_fuel.Size = new System.Drawing.Size(549, 36);
@@ -112,9 +111,7 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.l_updateRate});
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.toolStripStatusLabel1, this.l_updateRate});
             this.statusStrip1.Location = new System.Drawing.Point(3, 570);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(581, 22);
@@ -134,9 +131,7 @@
             // 
             // lbGeneral
             // 
-            this.lbGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbGeneral.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.lbGeneral.Location = new System.Drawing.Point(20, 210);
             this.lbGeneral.Name = "lbGeneral";
             this.lbGeneral.Size = new System.Drawing.Size(549, 295);
@@ -154,7 +149,7 @@
             // lblDemo
             // 
             this.lblDemo.AutoSize = true;
-            this.lblDemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDemo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.lblDemo.Location = new System.Drawing.Point(132, 33);
             this.lblDemo.Name = "lblDemo";
             this.lblDemo.Size = new System.Drawing.Size(336, 25);
@@ -328,7 +323,7 @@
             this.ClientSize = new System.Drawing.Size(595, 621);
             this.Controls.Add(this.hgf);
             this.Name = "SCSSdkClientDemo";
-            this.Text = "SCSSDkClientDemo 0.9";
+            this.Text = "SCS SDK Client Demo 0.9";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SCSSdkClientDemo_FormClosing);
             this.hgf.ResumeLayout(false);
             this.tabAbout.ResumeLayout(false);
@@ -344,7 +339,6 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion

@@ -69,7 +69,7 @@ namespace SCSSdkClient.Demo {
         private void TelemetryRefuelEnd(object sender, EventArgs e) =>  rtb_fuel.Invoke((MethodInvoker)(()=>rtb_fuel.BackColor = Color.Red));
 
         private void TelemetryRefuelPaid(object sender, EventArgs e) {
-            MessageBox.Show("Fuel Payed: " + fuel);
+            MessageBox.Show("Fuel Paid: " + fuel);
         }
 
 
@@ -124,15 +124,15 @@ namespace SCSSdkClient.Demo {
                 common.Text = JsonConvert.SerializeObject(data.CommonValues, Formatting.Indented);
                 truck.Text = JsonConvert.SerializeObject(data.TruckValues, Formatting.Indented);
                 trailer.Text =
-                    JsonConvert.SerializeObject(data.TrailerValues[0],
+                    JsonConvert.SerializeObject(data.TrailerValues,
                                                 Formatting
-                                                    .Indented); //TODO: UNTIL I WORK ON A BETTER DEMO SHOW ONLY TRAILER 0
+                                                    .Indented); // TODO better trailer display
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
                 gameplayevent.Text = JsonConvert.SerializeObject(data.GamePlay, Formatting.Indented);
-                rtb_fuel.Text = data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount + " "+ data.SpecialEventsValues.Refuel ;
+                rtb_fuel.Text = data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount + " "+ data.SpecialEventsValues.Refuel;
                 fuel = data.GamePlay.RefuelEvent.Amount; 
 
             } catch (Exception ex) {
