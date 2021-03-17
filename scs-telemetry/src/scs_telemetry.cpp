@@ -43,7 +43,7 @@ scsTelemetryMap_t* telem_ptr;
 
 // const: scs_mmf_name
 // Name/Location of the Shared Memory
-const wchar_t* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
+const char* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
 
 // ptr: game_log
 // Used to write to the game log

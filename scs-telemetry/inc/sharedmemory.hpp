@@ -17,7 +17,7 @@ class SharedMemory
 {
 protected:
 
-        LPCWSTR namePtr;
+        LPCSTR namePtr;
         int mapsize;
 
 		// MMF specifics
@@ -38,7 +38,7 @@ public:
         bool Hooked() { return isSharedMemoryHooked; }
         void* GetBuffer() { return pBufferPtr; }
 
-        SharedMemory(LPCWSTR newNamePtr, unsigned int size);
+        SharedMemory(LPCSTR newNamePtr, unsigned int size);
         void Close();
 
 		void* getPtrAt(int offset) { return (void*) &(((unsigned char*)pBufferPtr)[offset]); }

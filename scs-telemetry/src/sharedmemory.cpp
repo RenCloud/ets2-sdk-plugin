@@ -14,7 +14,7 @@ void SharedMemory::LogError(const char* logPtr) {
 #endif
 }
 
-SharedMemory::SharedMemory(LPCWSTR newNamePtr, unsigned int size) {
+SharedMemory::SharedMemory(LPCSTR newNamePtr, unsigned int size) {
     this->mapsize = size;
     this->namePtr = newNamePtr;
     this->isSharedMemoryHooked = false;
