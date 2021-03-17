@@ -21,6 +21,7 @@
 #include "sharedmemory.hpp"
 #include "scs_config_handlers.hpp"
 #include "scs_gameplay_event_handlers.hpp"
+#include "publisher.hpp"
 #include <log.hpp>
 
 #define UNUSED(x)
@@ -40,6 +41,8 @@
 
 SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
+
+Publisher* publisher;
 
 // const: scs_mmf_name
 // Name/Location of the Shared Memory
@@ -575,7 +578,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void* const event_
     // check which type the event has
     gameplayType type = {};
     if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
-        type = cancelled;
+        type = gameplayType::cancelled;
         telem_ptr->special_b.jobCancelled = true;
         telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
         clear_cancelled_ticker = 0;
@@ -584,7 +587,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void* const event_
         clear_job_ticker = 0;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) == 0) {
-        type = delivered;
+        type = gameplayType::delivered;
         telem_ptr->special_b.jobDelivered = true;
         telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
         clear_delivered_ticker = 0;
@@ -594,22 +597,22 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event, const void* const event_
 
     }
     else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0) {
-        type = fined;
+        type = gameplayType::fined;
         telem_ptr->special_b.fined = true;
         clear_fined_ticker = 0;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_tollgate_paid) == 0) {
-        type = tollgate;
+        type = gameplayType::tollgate;
         telem_ptr->special_b.tollgate = true;
         clear_tollgate_ticker = 0;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_ferry) == 0) {
-        type = ferry;
+        type = gameplayType::ferry;
         telem_ptr->special_b.ferry = true;
         clear_ferry_ticker = 0;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_train) == 0) {
-        type = train;
+        type = gameplayType::train;
         telem_ptr->special_b.train = true;
         clear_train_ticker = 0;
     }
@@ -647,25 +650,25 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void* const e
     // check which type the event has
     configType type = {};
     if (strcmp(info->id, SCS_TELEMETRY_CONFIG_substances) == 0) {
-        type = substances;
+        type = configType::substances;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_controls) == 0) {
-        type = controls;
+        type = configType::controls;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_hshifter) == 0) {
-        type = hshifter;
+        type = configType::hshifter;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_truck) == 0) {
-        type = truck;
+        type = configType::truck;
     }
     else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_job) == 0) {
-        type = job;
+        type = configType::job;
     }
     else {
         // check if it is trailer with backwards compatibility
         if (check_max_version(13, 0)) {
             if (strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
-                type = trailer;
+                type = configType::trailer;
                 trailer_id = 0;
 
             }
@@ -679,7 +682,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void* const e
                 if (strcmp(info->id, SCS_TELEMETRY_CONFIG_trailer) == 0) {
                     return;
                 }
-                type = trailer;
+                type = configType::trailer;
                 auto last = info->id[strlen(info->id) - 1];
                 trailer_id = last - '0';
                 if (trailer_id > 9 || trailer_id < 0) {
@@ -711,12 +714,12 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void* const e
         is_empty = false;
     }
     // if id of config is "job" but without element and we are on a job -> we finished it now
-    if (type == job && is_empty && telem_ptr->special_b.onJob) { 
+    if (type == configType::job && is_empty && telem_ptr->special_b.onJob) {
         telem_ptr->special_b.onJob = false;
         telem_ptr->special_b.jobFinished = true;
         clear_job_ticker = 0;
     }
-    else if (!telem_ptr->special_b.onJob && type == job && !is_empty) {
+    else if (!telem_ptr->special_b.onJob && type == configType::job && !is_empty) {
         // oh hey no job but now we have fields in this array so we start a new job
         telem_ptr->special_b.onJob = true;
         telem_ptr->gameplay_ui.jobStartingTime = telem_ptr->common_ui.time_abs;
@@ -816,13 +819,19 @@ SCSAPI_VOID telemetry_store_fplacement(const scs_string_t name, const scs_u32_t 
     *(static_cast<float *>(context) + 5) = value->value_fplacement.orientation.roll;
 }
 
+SCSAPI_VOID telemetry_frame_end(const scs_event_t UNUSED(event), const void* const event_info,
+    scs_context_t UNUSED(context)) {
+    
+    zmq::message_t msg(telem_ptr, SCS_PLUGIN_MMF_SIZE);
+
+    publisher->Send(topic::telemetry, msg);
+}
 
 /**
  * @brief Telemetry API initialization function.
  *
  * See scssdk_telemetry.h
  */
-
 SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t* const params) {
 
     // We currently support only two version.
@@ -851,21 +860,27 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 #endif
 
     /*** ACQUIRE SHARED MEMORY BUFFER ***/
-    telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
+    //telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
 
-    if (telem_mem == nullptr) {
-        return SCS_RESULT_generic_error;
-    }
+    //if (telem_mem == nullptr) {
+    //    return SCS_RESULT_generic_error;
+    //}
 
-    if (!telem_mem->Hooked()) {
-        return SCS_RESULT_generic_error;
-    }
+    //if (!telem_mem->Hooked()) {
+    //    return SCS_RESULT_generic_error;
+    //}
 
-    telem_ptr = static_cast<scsTelemetryMap_t*>(telem_mem->GetBuffer());
+    //telem_ptr = static_cast<scsTelemetryMap_t*>(telem_mem->GetBuffer());
+
+    telem_ptr = new scsTelemetryMap_t;
 
     if (telem_ptr == nullptr) {
         return SCS_RESULT_generic_error;
     }
+
+    /* CREATE PUBLISHER */
+    using namespace std::chrono_literals;
+    publisher = new Publisher(SCS_PLUGIN_IPC_TCP_PORT);
 
     // set sdk active bit to true
     telem_ptr->sdkActive = true;
@@ -906,10 +921,10 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
     /*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
     const auto events_registered =
-        version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, nullptr) ==
-        SCS_RESULT_ok &&
+        version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, nullptr) == SCS_RESULT_ok &&
         version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, nullptr) == SCS_RESULT_ok &&
-        version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, nullptr) == SCS_RESULT_ok;
+        version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, nullptr) == SCS_RESULT_ok &&
+        version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_end, telemetry_frame_end, nullptr) == SCS_RESULT_ok;
 
     // Register configuration event, because it sends data like truck make, etc.
     version_params->register_for_event(SCS_TELEMETRY_EVENT_configuration, telemetry_configuration, nullptr);
@@ -1164,6 +1179,10 @@ SCSAPI_VOID scs_telemetry_shutdown() {
 
     if (telem_mem != nullptr) {
         telem_mem->Close();
+    }
+
+    if (publisher != nullptr) {
+        publisher->Close();
     }
 }
 

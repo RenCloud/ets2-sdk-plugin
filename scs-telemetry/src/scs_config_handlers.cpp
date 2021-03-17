@@ -149,29 +149,29 @@ const int length_configs[] = {
 bool handleCfg(const scs_named_value_t* info, const configType type, const unsigned int trailer_id) {
     const scsConfigHandler_t* configs = nullptr;
     switch (type) {
-    case substances:
+    case configType::substances:
         configs = substances_config;
         break;
-    case controls:
+    case configType::controls:
         configs = controls_config;
         break;
-    case hshifter:
+    case configType::hshifter:
         configs = hshifter_config;
         break;
-    case truck:
+    case configType::truck:
         configs = truck_config;
         break;
-    case trailer:
+    case configType::trailer:
         configs = trailer_config;
         break;
-    case job:
+    case configType::job:
         configs = job_config;
         break;
     default:
         return false;
     }
     
-    for (auto index = 0; index < length_configs[type]; index++) {
+    for (auto index = 0; index < length_configs[int(type)]; index++) {
         if (strcmp(configs->id, info->name) == 0) {
             if (telem_ptr) {
                 // Equal ID's; then handle this configuration

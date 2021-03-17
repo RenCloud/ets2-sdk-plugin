@@ -1,5 +1,4 @@
-#ifndef SCS_TELEMETRY_COMMON_HPP
-#define SCS_TELEMETRY_COMMON_HPP
+#pragma once
 
 // This file contains "Common definitions" for this ETS2 telemetry plug-in.
 // This includes:
@@ -24,6 +23,8 @@
 #include "scssdk.h"
 #define SCS_PLUGIN_MMF_NAME TEXT("Local\\SCSTelemetry")
 #define SCS_PLUGIN_MMF_SIZE (32*1024)
+
+#define SCS_PLUGIN_IPC_TCP_PORT 30002
 /**
  * \brief string size for all strings (most of them) the amount of fields in the shared memory field
  */
@@ -40,10 +41,12 @@
 
 bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
 bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
-enum configType { substances, controls, hshifter, truck, trailer, job };
-enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
+enum class configType { substances, controls, hshifter, truck, trailer, job };
+enum class gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
 void log_line(scs_log_type_t type, const char* text, ...);
 void log_line(const char* text, ...);
+
+enum class topic { telemetry };
 
 typedef struct scsTrailer_s { // Size: 1528
 	//----- START OF FIRST ZONE AT OFFSET 0 -----//
@@ -543,5 +546,3 @@ typedef struct scsTelemetryMap_s
 
 	//----- END OF 14TH ZONE AT OFFSET 22420 -----//
 } scsTelemetryMap_t;
-
-#endif

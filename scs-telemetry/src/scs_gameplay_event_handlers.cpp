@@ -81,24 +81,24 @@ const int length_gameplays[] = {
 bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
     const scsGameplayEventHandler_t* gameplay = nullptr;
     switch (type) {
-    case cancelled:
+    case gameplayType::cancelled:
         gameplay = cancelled_gameplay;
         set_job_values_zero();
         break;
-    case delivered:
+    case gameplayType::delivered:
         gameplay = delivered_gameplay;
          set_job_values_zero();
         break;
-    case fined:
+    case gameplayType::fined:
         gameplay = fined_gameplay;
         break;
-    case tollgate:
+    case gameplayType::tollgate:
         gameplay = tollgate_gameplay;
         break;
-    case ferry:
+    case gameplayType::ferry:
         gameplay = ferry_gameplay;
         break;
-    case train:
+    case gameplayType::train:
         gameplay = train_gameplay;
         break;
     default:
@@ -106,7 +106,7 @@ bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
         return false;
     }
    
-    for (auto index = 0; index < length_gameplays[type]; index++) {
+    for (auto index = 0; index < length_gameplays[int(type)]; index++) {
         if (strcmp(gameplay->id, info->name) == 0) {
             if (telem_ptr) {
                 // Equal ID's; then handle this configuration
