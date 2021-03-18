@@ -18,7 +18,8 @@ namespace SCSSdkClient.Demo {
         public SCSSdkClientDemo() {
             InitializeComponent();
             // Telemetry = new SCSSdkTelemetry();
-            Telemetry = new SCSSdkTelemetry("tcp://localhost:30002", null);
+            // Telemetry = new SCSSdkTelemetry("tcp://localhost:30002", null);
+            Telemetry = new SCSSdkTelemetry("tcp://192.168.202.131:30002", null);
             Telemetry.Data += Telemetry_Data;
             Telemetry.JobStarted += TelemetryOnJobStarted;
 

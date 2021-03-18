@@ -1,10 +1,12 @@
 //Windows stuff.
 
 //TODO: cleanup file 900 lines are to many and there is much to do in an other file or class
+#ifdef _WIN32
 #define WINVER 0x0500
 #define WIN32_WINNT 0x0500
-
 #include <windows.h>
+#endif
+
 #include <cassert>
 #include <cstdarg>
 #include <algorithm>
@@ -18,7 +20,6 @@
 
 // Plug-in
 #include "scs-telemetry-common.hpp"
-#include "sharedmemory.hpp"
 #include "scs_config_handlers.hpp"
 #include "scs_gameplay_event_handlers.hpp"
 #include "publisher.hpp"
@@ -39,14 +40,8 @@
 #define REGISTER_CHANNEL_TRAILER_INDEX(id, name, type, to, index) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
 #define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ))
 
-SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
-
 Publisher* publisher;
-
-// const: scs_mmf_name
-// Name/Location of the Shared Memory
-const char* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
 
 // ptr: game_log
 // Used to write to the game log
@@ -72,7 +67,11 @@ void log_line(const scs_log_type_t type, const char* const text, ...) {
 
     va_list args;
     va_start(args, text);
+#ifdef _WIN32
     vsnprintf_s(formated, sizeof formated, _TRUNCATE, text, args);
+#else
+    vsnprintf(formated, sizeof formated, text, args);
+#endif
     formated[sizeof formated - 1] = 0;
     va_end(args);
 
@@ -89,7 +88,11 @@ void log_line(const char* const text, ...) {
 
     va_list args;
     va_start(args, text);
+#ifdef _WIN32
     vsnprintf_s(formated, sizeof formated, _TRUNCATE, text, args);
+#else
+    vsnprintf(formated, sizeof formated, text, args);
+#endif
     formated[sizeof formated - 1] = 0;
     va_end(args);
 
@@ -646,7 +649,7 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void* const e
     const auto info = static_cast<const scs_telemetry_configuration_t *>(
         // TODO: DELETE ENTRIES WHEN CALLED SO NO VALUE IS THERE to avoid wrong values when changes occur but not in arrays up to that slot or so 
         event_info);
-    unsigned int trailer_id = NULL;
+    unsigned int trailer_id = 0;
     // check which type the event has
     configType type = {};
     if (strcmp(info->id, SCS_TELEMETRY_CONFIG_substances) == 0) {
@@ -1177,18 +1180,13 @@ SCSAPI_VOID scs_telemetry_shutdown() {
     telem_ptr->common_ui.time_abs = 0;
     telem_ptr->common_f.scale = 0;
 
-    if (telem_mem != nullptr) {
-        telem_mem->Close();
-    }
 
     if (publisher != nullptr) {
         publisher->Close();
     }
 }
 
-// Telemetry api.
-
-// ReSharper disable once CppInconsistentNaming
+#ifdef _WIN32
 BOOL APIENTRY DllMain(
     HMODULE module,
     DWORD reason_for_call,
@@ -1201,3 +1199,4 @@ BOOL APIENTRY DllMain(
     }
     return TRUE;
 }
+#endif

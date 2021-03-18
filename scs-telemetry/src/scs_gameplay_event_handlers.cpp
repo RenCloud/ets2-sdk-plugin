@@ -3,11 +3,9 @@
 
 // Plug-in
 #include "scs-telemetry-common.hpp"
-#include "sharedmemory.hpp"
 
 #include "log.hpp"
 
-extern SharedMemory* telem_mem;
 extern scsTelemetryMap_t* telem_ptr;
 extern void set_job_values_zero();
 
