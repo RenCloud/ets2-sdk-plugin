@@ -1,5 +1,10 @@
 # Changelog
 
+## Rev 11
+
+- migration from Memory Mapped Files to ZeroMQ Publisher/Subscriber architecture on TCP port 30002
+- cross platform support (working Windows and Ubuntu, others not tested)
+
 ## Rev 10 Update 7
 
 - fix (again) of the `onJob`, `jobFinished` flag when `jobDelivered` and `jobChancelled` happens. (see Rev 10 Update 5)
@@ -25,12 +30,12 @@ Later added:
 
 ### known issues
 
-- when changing the profile or truck an `RefuelPayedEvent` can be called. I thought i fixed it, but i need to rethink how to 
+- when changing the profile or truck an `RefuelPayedEvent` can be called. I thought i fixed it, but i need to rethink how to
 
 ### Shared Memory Changes
 
 - Because new fine values can be longer than before (instead of 16 Byte it is now 32 Byte) some values moved at the end of Zone 9.
-	- ferry and train event values 
+  - ferry and train event values
 
 ## Rev 10 Update 5
 
@@ -38,15 +43,16 @@ Later added:
   - Job values are also reseted directly with the event
 - remove variable `i` from `scs_config_handlers.cpp` and `scs_gameplay_event_handlers.cpp`
 - now `isCargoLoaded` won't be reseted twice by calling `set_job_values_zero`, instead the `plannedDistanceKm` is reseted correctly
-- **value type changed** timestamp is know a `ulong`  and not a `uint` anymore (sdk value is `unsigned long long`)
+- **value type changed** timestamp is know a `ulong` and not a `uint` anymore (sdk value is `unsigned long long`)
 - added 2 new values: `simulation timestamp` and `render timestamp` both are `ulong` values similar to the `timestamp` -> changes in Shared Memory
 - the `update` or `timestamp` bool of the Data Event is now for some special cases also set to true:
+
   - (normal case) `timestamp` change
   - one of the critical events values change (`jobDelivered` , `jobCancelled`, `Train`, `Ferry` and `onJob`). Why? they could happen if the `timestamp` did not change
   - if both cases are false we check if the `pause` state change. Why? similar to above the `timestamp` did not change sometimes
 
 - **Shared Memory Changes**:
-  - > Zone 1 is modified  -> `time` change to `unsigned long long`, `simulatedTime` and `renderTime` added, moved `paused` behind `sdkActive` 
+  - > Zone 1 is modified -> `time` change to `unsigned long long`, `simulatedTime` and `renderTime` added, moved `paused` behind `sdkActive`
 
 ## Rev 10 Update 4 (with small fix)
 
@@ -61,7 +67,7 @@ Later added:
   - **NOTE:** `JobCancelled`: If the game is closed after or the profile is changed the start value will be **wrong**, because the Starting Time is set through the appearance of the `job` values of the sdk. On the start of a profile the value will be overwritten, because the `job` values are "new". Same thing happens when the sdk is restarted. If you want a "save" value, you may need to make a backup yourself. The value `Started` is set in the moment a new job is started and not bounded to the event itself. I will add some note to that in the documentation of course
   - **Note:** `JobDelivered`: Similar problem to `JobCancelled`, but it has an backup property. The backup property calculate the starting time through the `finished` and `DeliveringTime` value. The values should be equals. You can choose which values you want to use.
   - Additional: If you do not start the simulation (start driving) the timestamp won't updated to the game time of the current profile and can lead to wrong starting times
-- removed `memset` at shutdown call to avoid waiting time (leeds to shutdown time of ets2/ats of multiple minutes)  
+- removed `memset` at shutdown call to avoid waiting time (leeds to shutdown time of ets2/ats of multiple minutes)
 - **fix update** through the remove of `memset` the `sdkaktive` field was not set to false. Fixed that (**the DLL of this release does not contains this fix**)
   - some additional values will be set to 0:
     - SDK Version
@@ -72,10 +78,11 @@ Later added:
     - Common:
       - Scale
       - GameTime
-       
+
 **Note to that** may in a future release all values will be reset again, but i need to find a way that want create that high closing time for some users.
 
 - **Shared Memory Changes**:
+
   - > Zone 4 end is modified (floats) -> `gameplas_f.refuelAmount` added, so `job_f.cargoDamage` moved 4 bytes
   - > Zone 2 end is modified (uints) -> `jobStartingTime` and `jobFinishedTime` added, nothing moved
 
@@ -115,11 +122,11 @@ A lot changes here: update to SDK Version 1.10
 - shared memory files size increased (16kb to 32kb), because it can handle up to 10 trailers... that needs already a lot of space
 - structure of the shared memory file changed a lot through new order and new attributes
 - implement gameplay events from the api
-- added versions support (game sdk version) eg. for ets2 it is actually 1.14, but 1.13 is still working. With comming updates 1.13 will may deleted, because it could leed to errors or to many code. So should work for 1.27 up to 1.35+ for now. Possible also lower versions. 
+- added versions support (game sdk version) eg. for ets2 it is actually 1.14, but 1.13 is still working. With comming updates 1.13 will may deleted, because it could leed to errors or to many code. So should work for 1.27 up to 1.35+ for now. Possible also lower versions.
 - mostly added the new cool stuff of the sdk for now, more (e.g. linux support, logging, ...) will come in a later update
 - find and fixes a few bugs will creating new content (hopefully no new bugs)
-- notice: job canceled ~and tollgate~(tollgate works, but only if you pay and not your customer) seems not to work atm  
-- demo was updated but it's not working good with the 10 trailer updated. Avoid to open tje trailer page or you need to restart the demo. It will freeze the ui. (To high update rate of that mutch text, when game is paused ui will also stop freezing) 
+- notice: job canceled ~and tollgate~(tollgate works, but only if you pay and not your customer) seems not to work atm
+- demo was updated but it's not working good with the 10 trailer updated. Avoid to open tje trailer page or you need to restart the demo. It will freeze the ui. (To high update rate of that mutch text, when game is paused ui will also stop freezing)
 - new events to register (tollgate, train, ferry, fine, job delivered,... ) and some removed (trailer connected, disconnected) but you could create your own connected/disconnected listener if you need them again
 - a lot of other small thinks. i will start early to write update notes the next time (hopefuly)
 - some documentation for new functions, values etc.
