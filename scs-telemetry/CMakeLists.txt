@@ -9,7 +9,7 @@ project (scs-telemetry VERSION 1.11.0)
 
 message ("OS: " ${CMAKE_SYSTEM_NAME})
 
-if (WINDOWS)
+if (WIN32)
 	message (STATUS "Configuring for Windows")
 	set (VCPKG_TARGET_TRIPLET x64-windows-static)
 	set (CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
