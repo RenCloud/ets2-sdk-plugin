@@ -1,5 +1,9 @@
 # Changelog
 
+## Rev Pre 11
+
+- update .net Version to 4.8
+- update C++ Platform Tools to v142
 ## Rev 10 Update 7
 
 - fix (again) of the `onJob`, `jobFinished` flag when `jobDelivered` and `jobChancelled` happens. (see Rev 10 Update 5)
