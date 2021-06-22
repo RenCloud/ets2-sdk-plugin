@@ -4,6 +4,8 @@
 
 - update .net Version to 4.8
 - update C++ Platform Tools to v142
+- update sdk to 1.13, remove old sdks, current sdk is now placed in `scs_sdk` instead of `scs_sdk_{version}`
+
 ## Rev 10 Update 7
 
 - fix (again) of the `onJob`, `jobFinished` flag when `jobDelivered` and `jobChancelled` happens. (see Rev 10 Update 5)
