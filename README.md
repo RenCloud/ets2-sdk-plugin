@@ -46,19 +46,21 @@ This plug-in stores it's data inside a Memory Mapped File, or "Shared Memory". T
 
 Rev Numbers shows big changes on the shared memory and sometimes on the C# object. That means Rev 10 wont work with Rev 9. Doesn't matter which side is not updated. Sub Versions that you can see in changelog.md should work with small errors or completely without. The C# object is mostly not changed. Only if needed, because of new values (most of the cases) or structure changes (less the case). If this occurs i will notice that. (See changelog.md. If you directly access the shared memory you will find an overview about the changes here.)
 
-### Plugin for 1.36/SDK11
+### Plugin for 1.41/SDK1.13
 
 Lower SDK Version means there are less values / values that are zero. To get an overview which values that are look at the list at the middle of this document.
-Note to the SDK Version: SDK 11 is not the same like the sdk version of ETS2 or ATS. Both games have an own SDK version. See list under ATS.
+Note to the SDK Version: SDK 1.13 is not the same like the sdk version of ETS2 or ATS. Both games have an own SDK version. See list under ATS.
 
 ### ETS2
 
 |Game Version|SDK Version|Plugin State|
 |------------|-----------|------------|
 |1.26 and before|1.12 and before|Not Tested, could work with errors|
-|1.27 - 1.34 |1.13       |Work        |
-|1.35        |1.14       |Works|
-|1.36     |1.15        |Works, Test Version|
+|1.27 - 1.34 |1.13       | Should work        |
+|1.35        |1.14       | Should work|
+|1.36        |1.15       | Should work|
+| - 1.40      |1.16       | Should work|
+|1.41 beta   |1.17       | Works, Test Version|
 
 ### ATS
 
@@ -66,7 +68,9 @@ Note to the SDK Version: SDK 11 is not the same like the sdk version of ETS2 or 
 |------------|-----------|------------|
 |1.34 and before|1.0     |Should Work |
 |1.35        |1.01       |Works|
-|1.36     |1.02        |Works, Test Version|
+|1.36        |1.02      | Should work|
+| - 1.40      |1.03       | Should work|
+|1.41 beta   |1.04       | Works, Test Version|
 
 ### SDK VERSION AND GAME SDK VERSION
 
@@ -79,12 +83,15 @@ Note to the SDK Version: SDK 11 is not the same like the sdk version of ETS2 or 
 |1_9        |1.13            |1.00           |
 |1_10       |1.14            |1.01           |
 |1_11       |1.15            |1.02           |
+|1_12       |1.16            |1.03           |
+|1_13       |1.17            |1.04           |
+
 
 ### Telemetry fields and the c# object
 
 The following telemetry fields are supported, structure is similar the C# object. Starting with sdk 1.10, game patch 1.35 and ETS2 1.14, ATS 1.01 code for some part of the need different versions of the sdk. The plugin handles this. If a game lower than 1.35 is used, only the values without (1.14/1.01) are possible:
 
-Edit: for better overview it is now (ETS2 SDK/ATS SDK/Game Version). I added the game version, because it is most (every) time the same and most of you doesn't now the specific Game SDK Version.
+Edit: for better overview it is now (ETS2 SDK/ATS SDK/Game Version). I added the game version, because it is the same for ats and ets2 and most of you probably doesn't know the specific Game SDK Version.
 
 Changes are marked with the <del>deleted</del> Tag.
 New stuff is marked with the <ins>inserted</ins> Tag.
@@ -149,6 +156,10 @@ New stuff is marked with the <ins>inserted</ins> Tag.
 │    │    ├── <strong>Current Values (Values that change a lot)</strong>:
 │    │    │    ├── Electric Enabled
 │    │    │    ├── Engine Enabled
+│    │    │    ├── <ins>LiftAxle</ins> (1.17/1.04/1.41)
+│    │    │    ├── <ins>LiftAxleIndicator</ins> (1.17/1.04/1.41)
+│    │    │    ├── <ins>TrailerLiftAxle</ins> (1.17/1.04/1.41)
+│    │    │    ├── <ins>TrailerLiftAxleIndicator</ins> (1.17/1.04/1.41)
 │    │    │    ├── <strong>Motor Values</strong>:
 │    │    │    │    ├── <strong>Gear Values</strong>:
 │    │    │    │    │    ├── HShifterSlot
@@ -206,7 +217,8 @@ New stuff is marked with the <ins>inserted</ins> Tag.
 │    │    │    │    ├── Beam High
 │    │    │    │    ├── Beacon
 │    │    │    │    ├── Brake
-│    │    │    │    └── Reverse
+│    │    │    │    ├── Reverse
+│    │    │    │    └── HazardWarningLights (1.17/1.04/1.41)
 │    │    │    ├── <strong>Wheels</strong>:
 │    │    │    │    ├── Substance
 │    │    │    │    ├── SuspDeflection

@@ -29,6 +29,32 @@ namespace SCSSdkClient.Object {
                 /// </summary>
                 public bool EngineEnabled { get; internal set; }
 
+
+                /// <summary>
+                ///     Is the differential lock enabled?
+                /// </summary>
+                public bool DifferentialLock { get; internal set; }
+
+                /// <summary>
+                ///     Is the lift axle control set to lifted state?
+                /// </summary>
+                public bool LiftAxle { get; internal set; }
+
+                /// <summary>
+                ///     Is the lift axle indicator lit?
+                /// </summary>
+                public bool LiftAxleIndicator { get; internal set; }
+
+                /// <summary>
+                ///     Is the trailer lift axle controler set to lifted state?
+                /// </summary>
+                public bool TrailerLiftAxle { get; internal set; }
+
+                /// <summary>
+                ///     Is the trailer lift axle indicator lit?
+                /// </summary>
+                public bool TrailerLiftAxleIndicator { get; internal set; }
+
                 /// <summary>
                 ///     Current values of the motor
                 ///     <seealso cref="Motor" /> for more information
@@ -424,6 +450,17 @@ namespace SCSSdkClient.Object {
                     ///     Are the Reverse lights enabled?
                     /// </summary>
                     public bool Reverse { get; internal set; }
+
+                    /// <summary>
+                    ///     Are the hazard warning lights enabled?  
+                    /// </summary>
+                    /// <!----> **INFORMATION** <!---->
+                    /// This represents the logical enable state of the hazard warning.
+                    /// It it is true as long it is enabled regardless of the physical
+                    /// enabled state of the light(i.e.it does not blink).
+                    /// <!----> **INFORMATION** <!---->
+                    public bool HazardWarningLights { get; internal set; }
+
                 }
 
                 /// <summary>

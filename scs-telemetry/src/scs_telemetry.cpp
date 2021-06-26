@@ -1129,6 +1129,17 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
     }
 
+    // new in 1.41, ets2 1.17 and ats 1.04
+    if (check_min_version(17, 4)) {
+        REGISTER_CHANNEL(TRUCK_CHANNEL_hazard_warning, bool, telem_ptr->truck_b.lightsHazard);
+        REGISTER_CHANNEL(TRUCK_CHANNEL_differential_lock, bool, telem_ptr->truck_b.differentialLock);
+        REGISTER_CHANNEL(TRUCK_CHANNEL_lift_axle, bool, telem_ptr->truck_b.liftAxle);
+        REGISTER_CHANNEL(TRUCK_CHANNEL_lift_axle_indicator, bool, telem_ptr->truck_b.liftAxleIndicator);
+        REGISTER_CHANNEL(TRUCK_CHANNEL_trailer_lift_axle, bool, telem_ptr->truck_b.trailerLiftAxle);
+        REGISTER_CHANNEL(TRUCK_CHANNEL_trailer_lift_axle_indicator, bool, telem_ptr->truck_b.trailerLiftAxleIndicator);
+
+    }
+
     // Set the structure with defaults.
 
     timestamp = static_cast<scs_timestamp_t>(0);

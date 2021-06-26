@@ -356,9 +356,15 @@ typedef struct scsTelemetryMap_s
 		bool lightsBeacon;
 		bool lightsBrake;
 		bool lightsReverse;
+		bool lightsHazard;
 		bool cruiseControl; // special field not a sdk field
 		bool truck_wheelOnGround[16];
 		bool shifterToggle[2];
+		bool differentialLock;
+		bool liftAxle;
+		bool liftAxleIndicator;
+		bool trailerLiftAxle;
+		bool trailerLiftAxleIndicator;
 	}truck_b;
 
 	struct
@@ -367,7 +373,7 @@ typedef struct scsTelemetryMap_s
 		bool jobDeliveredAutoloadUsed;
 	}gameplay_b;
 
-	char buffer_b[31];
+	char buffer_b[25];
 	//----- END OF FIFTH ZONE AT OFFSET 1639 -----//
 
 	//----- START OF SIXTH ZONE AT OFFSET 1640 -----//

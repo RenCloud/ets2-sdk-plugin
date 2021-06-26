@@ -5,6 +5,18 @@
 - update .net Version to 4.8
 - update C++ Platform Tools to v142
 - update sdk to 1.13, remove old sdks, current sdk is now placed in `scs_sdk` instead of `scs_sdk_{version}`
+  - Only a few changes: 5 new Truck values (see below)
+- update readme.md
+### New Values
+
+- Hazard Warning (Ets2/ATS 1.41)
+- Differential Lock (Ets2/ATS 1.41)
+- Lift Axle and Indicator, Trailer Lift Axle and Indicator (Ets2/ATS 1.41)
+
+### Shared Memory Changes
+
+- 5th Zone added `lightHazard` after `lightsReverse`, changing offset of the following 7 values
+- 5th Zone added the differential lock and lift axle values (5 new values). Placed after `shifterToggle`, changing offset of the following 2 values
 
 ## Rev 10 Update 7
 

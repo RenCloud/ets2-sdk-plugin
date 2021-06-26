@@ -219,9 +219,16 @@ namespace SCSSdkClient {
             retData.TruckValues.CurrentValues.LightsValues.Beacon = GetBool();
             retData.TruckValues.CurrentValues.LightsValues.Brake = GetBool();
             retData.TruckValues.CurrentValues.LightsValues.Reverse = GetBool();
+            retData.TruckValues.CurrentValues.LightsValues.HazardWarningLights = GetBool();
             retData.TruckValues.CurrentValues.DashboardValues.CruiseControl = GetBool();
             retData.TruckValues.CurrentValues.WheelsValues.OnGround = GetBoolArray(WheelSize);
             retData.TruckValues.CurrentValues.MotorValues.GearValues.HShifterSelector = GetBoolArray(2);
+
+            retData.TruckValues.CurrentValues.DifferentialLock = GetBool();
+            retData.TruckValues.CurrentValues.LiftAxle = GetBool();
+            retData.TruckValues.CurrentValues.LiftAxleIndicator = GetBool();
+            retData.TruckValues.CurrentValues.TrailerLiftAxle = GetBool();
+            retData.TruckValues.CurrentValues.TrailerLiftAxleIndicator = GetBool();
 
             retData.GamePlay.JobDelivered.AutoParked = GetBool();
             retData.GamePlay.JobDelivered.AutoLoaded = GetBool();
