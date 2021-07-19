@@ -1,14 +1,19 @@
-//Windows stuff.
-
 //TODO: cleanup file 900 lines are to many and there is much to do in an other file or class
+
+
+#ifdef WIN32
+//Windows stuff.
 #define WINVER 0x0500
 #define WIN32_WINNT 0x0500
 
 #include <windows.h>
+#endif
+
 #include <cassert>
 #include <cstdarg>
 #include <algorithm>
 #include <string>
+#include <cstring>
 // SDK
 #include "scssdk_telemetry.h"
 #include "eurotrucks2/scssdk_eut2.h"
@@ -18,7 +23,6 @@
 
 // Plug-in
 #include "scs-telemetry-common.hpp"
-#include "sharedmemory.hpp"
 #include "scs_config_handlers.hpp"
 #include "scs_gameplay_event_handlers.hpp"
 #include <log.hpp>
@@ -38,12 +42,11 @@
 #define REGISTER_CHANNEL_TRAILER_INDEX(id, name, type, to, index) version_params->register_for_channel((std::string("trailer.")+std::to_string(id)+std::string("."#name)).c_str(), index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, telemetry_store_##type, &( to ))
 #define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ))
 
-SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
 
-// const: scs_mmf_name
-// Name/Location of the Shared Memory
-const wchar_t* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
+//// const: scs_mmf_name
+//// Name/Location of the Shared Memory
+//const wchar_t* scs_mmf_name = SCS_PLUGIN_MMF_NAME;
 
 // ptr: game_log
 // Used to write to the game log
@@ -69,7 +72,11 @@ void log_line(const scs_log_type_t type, const char* const text, ...) {
 
     va_list args;
     va_start(args, text);
+#ifdef WIN32
     vsnprintf_s(formated, sizeof formated, _TRUNCATE, text, args);
+#else
+    vsnprintf(formated, sizeof formated, text, args);
+#endif
     formated[sizeof formated - 1] = 0;
     va_end(args);
 
@@ -86,7 +93,11 @@ void log_line(const char* const text, ...) {
 
     va_list args;
     va_start(args, text);
+#ifdef WIN32
     vsnprintf_s(formated, sizeof formated, _TRUNCATE, text, args);
+#else
+    vsnprintf(formated, sizeof formated, text, args);
+#endif
     formated[sizeof formated - 1] = 0;
     va_end(args);
 
@@ -351,16 +362,16 @@ void set_job_values_zero() {
     telem_ptr->job_f.cargoDamage = 0;
     telem_ptr->config_b.isCargoLoaded = false;
     telem_ptr->config_ui.plannedDistanceKm = 0;
-    memset(telem_ptr->config_s.compDstId, 0, stringsize);
-    memset(telem_ptr->config_s.compSrcId, 0, stringsize);
-    memset(telem_ptr->config_s.cityDstId, 0, stringsize);
-    memset(telem_ptr->config_s.citySrcId, 0, stringsize);
-    memset(telem_ptr->config_s.citySrc, 0, stringsize);
-    memset(telem_ptr->config_s.cityDst, 0, stringsize);
-    memset(telem_ptr->config_s.compSrc, 0, stringsize);
-    memset(telem_ptr->config_s.compDst, 0, stringsize);
-    memset(telem_ptr->config_s.cargoId, 0, stringsize);
-    memset(telem_ptr->config_s.cargo, 0, stringsize);
+    memset(telem_ptr->config_s.compDstId, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.compSrcId, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.cityDstId, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.citySrcId, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.citySrc, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.cityDst, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.compSrc, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.compDst, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.cargoId, 0, STRING_SIZE);
+    memset(telem_ptr->config_s.cargo, 0, STRING_SIZE);
     memset(telem_ptr->config_s.jobMarket, 0, 32);
 }
 
@@ -849,23 +860,25 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	log_line("LOGGING is active find at %s", logger::path.c_str());
 	logger::out << "start logging" << '\n';
 #endif
+//
+//    /*** ACQUIRE SHARED MEMORY BUFFER ***/
+//    telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
+//
+//    if (telem_mem == nullptr) {
+//        return SCS_RESULT_generic_error;
+//    }
+//
+//    if (!telem_mem->Hooked()) {
+//        return SCS_RESULT_generic_error;
+//    }
 
-    /*** ACQUIRE SHARED MEMORY BUFFER ***/
-    telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
+    // TODO initialize TCP server
 
-    if (telem_mem == nullptr) {
-        return SCS_RESULT_generic_error;
-    }
-
-    if (!telem_mem->Hooked()) {
-        return SCS_RESULT_generic_error;
-    }
-
-    telem_ptr = static_cast<scsTelemetryMap_t*>(telem_mem->GetBuffer());
-
-    if (telem_ptr == nullptr) {
-        return SCS_RESULT_generic_error;
-    }
+//    telem_ptr = static_cast<scsTelemetryMap_t*>(telem_mem->GetBuffer());
+//
+//    if (telem_ptr == nullptr) {
+//        return SCS_RESULT_generic_error;
+//    }
 
     // set sdk active bit to true
     telem_ptr->sdkActive = true;
@@ -1173,13 +1186,16 @@ SCSAPI_VOID scs_telemetry_shutdown() {
     telem_ptr->common_ui.time_abs = 0;
     telem_ptr->common_f.scale = 0;
 
-    if (telem_mem != nullptr) {
-        telem_mem->Close();
-    }
+//    if (telem_mem != nullptr) {
+//        telem_mem->Close();
+//    }
+
+// TODO close TCP server
 }
 
 // Telemetry api.
 
+#ifdef WIN32
 // ReSharper disable once CppInconsistentNaming
 BOOL APIENTRY DllMain(
     HMODULE module,
@@ -1193,3 +1209,4 @@ BOOL APIENTRY DllMain(
     }
     return TRUE;
 }
+#endif

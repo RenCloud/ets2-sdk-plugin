@@ -4,30 +4,25 @@
 // This file contains "Common definitions" for this ETS2 telemetry plug-in.
 // This includes:
 // - Debug logging detail options
-// - Shared memory map struct layout
 // - [..]
 
-#define PLUGIN_REVID					10
+#define PLUGIN_REVID					11
 
 #define ETS2                            1
 #define ATS                             2
 #define UnknownGame                     0
 
 #define ETS2_PLUGIN_LOGGING_ON				0
-#define ETS2_PLUGIN_LOGGING_SHAREDMEMORY	0
-#define ETS2_PLUGIN_FILENAME_PREFIX "C:\ets2telem_"
 
 #if ETS2_PLUGIN_LOGGING_ON == 1
 #define SDK_ENABLE_LOGGING
 #endif
 
 #include "scssdk.h"
-#define SCS_PLUGIN_MMF_NAME TEXT("Local\\SCSTelemetry")
-#define SCS_PLUGIN_MMF_SIZE (32*1024)
 /**
  * \brief string size for all strings (most of them) the amount of fields in the shared memory field
  */
-#define stringsize  64
+#define STRING_SIZE  64
 
  /**
   * \brief Actual used wheel size of the SDK   not the amount of fields in the shared memory field
@@ -120,16 +115,16 @@ typedef struct scsTrailer_s { // Size: 1552
 	//----- END OF 5TH ZONE AT OFFSET 911 -----//
 		//----- START OF 6TH ZONE AT OFFSET 912 -----//
 	struct {
-		char id[stringsize];
-		char cargoAcessoryId[stringsize];
-		char bodyType[stringsize];
-		char brandId[stringsize];
-		char brand[stringsize];
-		char name[stringsize];
-		char chainType[stringsize];
-		char licensePlate[stringsize];
-		char licensePlateCountry[stringsize];
-		char licensePlateCountryId[stringsize];
+		char id[STRING_SIZE];
+		char cargoAcessoryId[STRING_SIZE];
+		char bodyType[STRING_SIZE];
+		char brandId[STRING_SIZE];
+		char brand[STRING_SIZE];
+		char name[STRING_SIZE];
+		char chainType[STRING_SIZE];
+		char licensePlate[STRING_SIZE];
+		char licensePlateCountry[STRING_SIZE];
+		char licensePlateCountryId[STRING_SIZE];
 	}con_s;
 	//----- END OF 6TH ZONE AT OFFSET 1551 -----//
 }scsTrailer_t;
@@ -453,39 +448,39 @@ typedef struct scsTelemetryMap_s
 	// The 9th zone contains strings and is sorted in sub structures
 
 	struct {
-		char truckBrandId[stringsize];
-		char truckBrand[stringsize];
-		char truckId[stringsize];
+		char truckBrandId[STRING_SIZE];
+		char truckBrand[STRING_SIZE];
+		char truckId[STRING_SIZE];
 
-		char truckName[stringsize];
-		char cargoId[stringsize];
-		char cargo[stringsize];
-		char cityDstId[stringsize];
-		char cityDst[stringsize];
-		char compDstId[stringsize];
-		char compDst[stringsize];
-		char citySrcId[stringsize];
-		char citySrc[stringsize];
-		char compSrcId[stringsize];
-		char compSrc[stringsize];
+		char truckName[STRING_SIZE];
+		char cargoId[STRING_SIZE];
+		char cargo[STRING_SIZE];
+		char cityDstId[STRING_SIZE];
+		char cityDst[STRING_SIZE];
+		char compDstId[STRING_SIZE];
+		char compDst[STRING_SIZE];
+		char citySrcId[STRING_SIZE];
+		char citySrc[STRING_SIZE];
+		char compSrcId[STRING_SIZE];
+		char compSrc[STRING_SIZE];
 		char shifterType[16];
 
-		char truckLicensePlate[stringsize];
-		char truckLicensePlateCountryId[stringsize];
-		char truckLicensePlateCountry[stringsize];
+		char truckLicensePlate[STRING_SIZE];
+		char truckLicensePlateCountryId[STRING_SIZE];
+		char truckLicensePlateCountry[STRING_SIZE];
 
 		char jobMarket[32];
 	}config_s;
 	struct {
 		char fineOffence[32];
-		char ferrySourceName[stringsize];
-		char ferryTargetName[stringsize];
-		char ferrySourceId[stringsize];
-		char ferryTargetId[stringsize];
-		char trainSourceName[stringsize];
-		char trainTargetName[stringsize];
-		char trainSourceId[stringsize];
-		char trainTargetId[stringsize];
+		char ferrySourceName[STRING_SIZE];
+		char ferryTargetName[STRING_SIZE];
+		char ferrySourceId[STRING_SIZE];
+		char ferryTargetId[STRING_SIZE];
+		char trainSourceName[STRING_SIZE];
+		char trainTargetName[STRING_SIZE];
+		char trainSourceId[STRING_SIZE];
+		char trainTargetId[STRING_SIZE];
 	}gameplay_s;
 
 	char buffer_s[20];
@@ -537,7 +532,7 @@ typedef struct scsTelemetryMap_s
 	// The 13th zone contains substances, place for 25 of them
 
 	struct {
-		char substance[SUBSTANCE_SIZE][stringsize];
+		char substance[SUBSTANCE_SIZE][STRING_SIZE];
 	}substances;
 	//----- END OF 13TH ZONE AT OFFSET 5999 -----//
 
