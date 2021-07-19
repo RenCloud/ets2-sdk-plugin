@@ -25,6 +25,7 @@
 #include "scs-telemetry-common.hpp"
 #include "scs_config_handlers.hpp"
 #include "scs_gameplay_event_handlers.hpp"
+#include "tcp_server.hpp"
 #include <log.hpp>
 
 #define UNUSED(x)
@@ -43,6 +44,8 @@
 #define REGISTER_SPECIFIC_CHANNEL(name, type, handler,to) version_params->register_for_channel(SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &( to ))
 
 scsTelemetryMap_t* telemetryPtr;
+TcpServer *server = nullptr;
+
 
 //// const: scs_mmf_name
 //// Name/Location of the Shared Memory
@@ -825,6 +828,10 @@ SCSAPI_VOID telemetry_store_fplacement(const scs_string_t UNUSED(name), const sc
     *(static_cast<float *>(context) + 5) = value->value_fplacement.orientation.roll;
 }
 
+SCSAPI_VOID telemetry_frame_end(const scs_event_t UNUSED(event), const void* const UNUSED(event_info),
+                                scs_context_t UNUSED(context)) {
+    server->broadcast((char*)telemetryPtr, sizeof(*telemetryPtr));
+}
 
 /**
  * @brief Telemetry API initialization function.
@@ -853,25 +860,18 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	log_line("LOGGING is active find at %s", logger::path.c_str());
 	logger::out << "start logging" << '\n';
 #endif
-//
-//    /*** ACQUIRE SHARED MEMORY BUFFER ***/
-//    telem_mem = new SharedMemory(scs_mmf_name, SCS_PLUGIN_MMF_SIZE);
-//
-//    if (telem_mem == nullptr) {
-//        return SCS_RESULT_generic_error;
-//    }
-//
-//    if (!telem_mem->Hooked()) {
-//        return SCS_RESULT_generic_error;
-//    }
 
-    // TODO initialize TCP server
+    telemetryPtr = new scsTelemetryMap_t;
+    memset(telemetryPtr, 0, sizeof(*telemetryPtr));
 
-//    telemetryPtr = static_cast<scsTelemetryMap_t*>(telem_mem->GetBuffer());
-//
-//    if (telemetryPtr == nullptr) {
-//        return SCS_RESULT_generic_error;
-//    }
+    server = new TcpServer(game_log);
+
+    if (!server->init()) {
+        delete telemetryPtr;
+        delete server;
+        return SCS_RESULT_generic_error;
+    }
+
 
     // set sdk active bit to true
     telemetryPtr->sdkActive = true;
@@ -913,6 +913,8 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     /*** REGISTER GAME EVENTS (Pause/Unpause/Start/Time) ***/
     const auto events_registered =
         version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_start, telemetry_frame_start, nullptr) ==
+        SCS_RESULT_ok &&
+        version_params->register_for_event(SCS_TELEMETRY_EVENT_frame_end, telemetry_frame_end, nullptr) ==
         SCS_RESULT_ok &&
         version_params->register_for_event(SCS_TELEMETRY_EVENT_paused, telemetry_pause, nullptr) == SCS_RESULT_ok &&
         version_params->register_for_event(SCS_TELEMETRY_EVENT_started, telemetry_pause, nullptr) == SCS_RESULT_ok;
@@ -1154,7 +1156,6 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
     return SCS_RESULT_ok;
 }
 
-
 /**
  * @brief Telemetry API de-initialization function.
  *
@@ -1179,11 +1180,9 @@ SCSAPI_VOID scs_telemetry_shutdown() {
     telemetryPtr->common_ui.time_abs = 0;
     telemetryPtr->common_f.scale = 0;
 
-//    if (telem_mem != nullptr) {
-//        telem_mem->Close();
-//    }
+    server->broadcast((char*)telemetryPtr, sizeof(*telemetryPtr));
 
-// TODO close TCP server
+    delete server;
 }
 
 // Telemetry api.
