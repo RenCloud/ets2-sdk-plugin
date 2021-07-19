@@ -53,6 +53,6 @@ scsGameplayEventHandle(Train, SourceId);
 scsGameplayEventHandle(Train, TargetId);
 
 
-bool handleGpe(const scs_named_value_t* info,const gameplayType type );
+bool handleGpe(const scs_named_value_t* info, gameplayType type);
 
 #endif

@@ -1,6 +1,3 @@
-
-
-
 #ifndef SCS_CFG_HANDLERS_H
 #define SCS_CFG_HANDLERS_H
 
@@ -9,6 +6,7 @@
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
 #include "scs-telemetry-common.hpp"
+
 typedef struct scsConfigHandler_s
 {
 	char const *id;
@@ -17,7 +15,7 @@ typedef struct scsConfigHandler_s
 
 /*  define: scsConfigHandle
      
-    Makro of the scs_config event handle functions
+    Macro of the scs_config event handle functions
     Created with an id and attribute value to create the name `handle##id##attribute`
 
     Parameter:
@@ -26,7 +24,7 @@ typedef struct scsConfigHandler_s
         trailer_id - trailer id if needed to handle the event (0-9)    
  
  */
-#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current, const unsigned int trailer_id  )
+#define scsConfigHandle(id, attribute) void handle##id##attribute (const scs_named_value_t* current, unsigned int trailer_id  )
 
 // Define prototypes for all the various handlers
 
@@ -119,5 +117,5 @@ scsConfigHandle(Job, UnitCount);
 scsConfigHandle(Job, UnitMass);
 scsConfigHandle(Job, PlannedDistanceKm);
 
-bool handleCfg(const scs_named_value_t* info,const configType type, const unsigned int trailer_id);
+bool handleCfg(const scs_named_value_t* info, configType type, unsigned int trailer_id);
 #endif

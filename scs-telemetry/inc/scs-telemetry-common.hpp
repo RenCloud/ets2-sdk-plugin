@@ -1,3 +1,4 @@
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef SCS_TELEMETRY_COMMON_HPP
 #define SCS_TELEMETRY_COMMON_HPP
 
@@ -33,8 +34,8 @@
   // The maximum number of substances that are saved to the memory
 #define SUBSTANCE_SIZE 25
 
-bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
-bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
+bool check_min_version(unsigned int min_ets2, unsigned int min_ats);
+bool check_max_version(unsigned int min_ets2, unsigned int min_ats);
 enum configType { substances, controls, hshifter, truck, trailer, job };
 enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
 void log_line(scs_log_type_t type, const char* text, ...);
@@ -52,7 +53,7 @@ typedef struct scsTrailer_s { // Size: 1552
 		bool wheelOnGround[16];
 		bool attached;
 	}com_b;
-	char buffer_b[3];
+    char buffer_b[3];
 	//----- END OF FIRST ZONE AT OFFSET 83 -----//
 	//----- START OF SECOND ZONE AT OFFSET 84 -----//
 	struct {
@@ -67,7 +68,7 @@ typedef struct scsTrailer_s { // Size: 1552
 		float cargoDamage;
 		float wearChassis;
 		float wearWheels;
-		float wheelSuspDeflection[16];
+		float wheelSuspensionDeflection[16];
 		float wheelVelocity[16];
 		float wheelSteering[16];
 		float wheelRotation[16];
@@ -116,7 +117,7 @@ typedef struct scsTrailer_s { // Size: 1552
 		//----- START OF 6TH ZONE AT OFFSET 912 -----//
 	struct {
 		char id[STRING_SIZE];
-		char cargoAcessoryId[STRING_SIZE];
+		char cargoAccessoryId[STRING_SIZE];
 		char bodyType[STRING_SIZE];
 		char brandId[STRING_SIZE];
 		char brand[STRING_SIZE];
@@ -132,9 +133,9 @@ typedef struct scsTrailer_s { // Size: 1552
 /**
    *  \brief Telemetry object
    *
-   * instead to use a clear object like that in c# we want to create this one easy to parse and modifyable
+   * instead to use a clear object like that in c# we want to create this one easy to parse and modifiable
    *
-   * Look in the c header of the sdk for more desription or in the c# description
+   * Look in the c header of the sdk for more description or in the c# description
    *
    * Arrays must be set here and have all local parameter for their size
    */
@@ -160,7 +161,7 @@ typedef struct scsTelemetryMap_s
 	//----- END OF FIRST ZONE AT OFFSET 39 -----//in
 
 	//----- START OF SECOND ZONE AT OFFSET 40 -----//
-	// The Secon zone contains unsigned integers and it sorted in sub structures
+	// The Second zone contains unsigned integers and it sorted in sub structures
 
 	// Contains Game independent values and plugin version
 	struct
@@ -247,10 +248,10 @@ typedef struct scsTelemetryMap_s
 	struct {
 		float fuelCapacity;
 		float fuelWarningFactor;
-		float adblueCapacity;
-		float adblueWarningFactor;
+		float adBlueCapacity;
+		float adBlueWarningFactor;
 		float airPressureWarning;
-		float airPressurEmergency;
+		float airPressureEmergency;
 		float oilPressureWarning;
 		float waterTemperatureWarning;
 		float batteryVoltageWarning;
@@ -280,7 +281,7 @@ typedef struct scsTelemetryMap_s
 		float fuel;
 		float fuelAvgConsumption;
 		float fuelRange;
-		float adblue;
+		float adBlue;
 		float oilPressure;
 		float oilTemperature;
 		float waterTemperature;
@@ -295,12 +296,12 @@ typedef struct scsTelemetryMap_s
 		float routeDistance;
 		float routeTime;
 		float speedLimit;
-		float truck_wheelSuspDeflection[16];
-		float truck_wheelVelocity[16];
-		float truck_wheelSteering[16];
-		float truck_wheelRotation[16];
-		float truck_wheelLift[16];
-		float truck_wheelLiftOffset[16];
+		float truckWheelSuspensionDeflection[16];
+		float truckWheelVelocity[16];
+		float truckWheelSteering[16];
+		float truckWheelRotation[16];
+		float truckWheelLift[16];
+		float truckWheelLiftOffset[16];
 	}truck_f;
 
 	struct {
@@ -334,7 +335,7 @@ typedef struct scsTelemetryMap_s
 		bool airPressureWarning;
 		bool airPressureEmergency;
 		bool fuelWarning;
-		bool adblueWarning;
+		bool adBlueWarning;
 		bool oilPressureWarning;
 		bool waterTemperatureWarning;
 		bool batteryVoltageWarning;
@@ -364,7 +365,7 @@ typedef struct scsTelemetryMap_s
 
 	struct
 	{
-		bool jobDeliveredAutoparkUsed;
+		bool jobDeliveredAutoParkUsed;
 		bool jobDeliveredAutoloadUsed;
 	}gameplay_b;
 
@@ -417,15 +418,15 @@ typedef struct scsTelemetryMap_s
 		float cabinOffsetX;
 		float cabinOffsetY;
 		float cabinOffsetZ;
-		float cabinOffsetrotationX;
-		float cabinOffsetrotationY;
-		float cabinOffsetrotationZ;
+		float cabinOffsetRotationX;
+		float cabinOffsetRotationY;
+		float cabinOffsetRotationZ;
 		float headOffsetX;
 		float headOffsetY;
 		float headOffsetZ;
-		float headOffsetrotationX;
-		float headOffsetrotationY;
-		float headOffsetrotationZ;
+		float headOffsetRotationX;
+		float headOffsetRotationY;
+		float headOffsetRotationZ;
 	}truck_fp;
 	char buffer_fp[152];
 	//----- END OF 7TH ZONE AT OFFSET 2199 -----//
