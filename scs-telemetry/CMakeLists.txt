@@ -10,12 +10,12 @@ endif()
 include_directories("../scs_sdk/include")
 include_directories("inc")
 
-file(GLOB scs-telemetry-HEADERS
-        "inc/*.h"
-        "inc/*.hpp")
-
-file(GLOB scs-telemetry-SOURCE
-        "src/*.c"
-        "src/*.cpp")
-
-add_library(scs-telemetry SHARED ${scs-telemetry-HEADERS} ${scs-telemetry-SOURCE})
+add_library(scs-telemetry SHARED
+        inc/log.hpp
+        inc/scs-telemetry-common.hpp
+        inc/scs_config_handlers.hpp
+        inc/scs_gameplay_event_handlers.hpp
+        src/log.cpp
+        src/scs_config_handlers.cpp
+        src/scs_gameplay_event_handlers.cpp
+        src/scs_telemetry.cpp)
