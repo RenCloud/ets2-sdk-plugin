@@ -24,7 +24,7 @@
 [Dd]ebugPublic/
 [Rr]elease/
 x64/
-build/
+**/build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -199,6 +199,7 @@ Desktop.ini
 $RECYCLE.BIN/
 
 .vs
+/scs-telemetry/.idea/
 
 
 Working Data/
