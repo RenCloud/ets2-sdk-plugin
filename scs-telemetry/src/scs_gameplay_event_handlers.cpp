@@ -184,7 +184,7 @@ scsGameplayEventHandle(Delivered, AutoloadUsed) {
 // Function: handleFinedFineOffence
 // Fine offence type
 scsGameplayEventHandle(Fined, FineOffence) {
-    strncpy(telemetryPtr->gameplay_s.fineOffence, current->value.value_string.value, 32);
+    COPY(telemetryPtr->gameplay_s.fineOffence, current->value.value_string.value, 32);
 }
 
 // Function: handleFinedFineAmount
@@ -221,25 +221,25 @@ scsGameplayEventHandle(Ferry, PayAmount) {
 // Function: handleFerrySourceName
 // The name of the transportation source.
 scsGameplayEventHandle(Ferry, SourceName) {
-    strncpy(telemetryPtr->gameplay_s.ferrySourceName, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.ferrySourceName, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleFerryTargetName
 // The name of the transportation target.
 scsGameplayEventHandle(Ferry, TargetName) {
-    strncpy(telemetryPtr->gameplay_s.ferryTargetName, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.ferryTargetName, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleFerrySourceId
 // The id of the transportation source.
 scsGameplayEventHandle(Ferry, SourceId) {
-    strncpy(telemetryPtr->gameplay_s.ferrySourceId, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.ferrySourceId, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleFerryTargetId
 // The id of the transportation target.
 scsGameplayEventHandle(Ferry, TargetId) {
-    strncpy(telemetryPtr->gameplay_s.ferryTargetId, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.ferryTargetId, current->value.value_string.value, STRING_SIZE);
 }
 
 
@@ -257,25 +257,25 @@ scsGameplayEventHandle(Train, PayAmount) {
 // Function: handleTrainSourceName
 // The name of the transportation source.
 scsGameplayEventHandle(Train, SourceName) {
-    strncpy(telemetryPtr->gameplay_s.trainSourceName, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.trainSourceName, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleTrainTargetName
 // The name of the transportation target.
 scsGameplayEventHandle(Train, TargetName) {
-    strncpy(telemetryPtr->gameplay_s.trainTargetName, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.trainTargetName, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleTrainSourceId
 // The id of the transportation source.
 scsGameplayEventHandle(Train, SourceId) {
-    strncpy(telemetryPtr->gameplay_s.trainSourceId, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.trainSourceId, current->value.value_string.value, STRING_SIZE);
 }
 
 // Function: handleTrainTargetId
 // The id of the transportation target.
 scsGameplayEventHandle(Train, TargetId) {
-    strncpy(telemetryPtr->gameplay_s.trainTargetId, current->value.value_string.value, STRING_SIZE);
+    COPY(telemetryPtr->gameplay_s.trainTargetId, current->value.value_string.value, STRING_SIZE);
 }
 
 

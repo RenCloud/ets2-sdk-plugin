@@ -19,6 +19,12 @@
 #define SDK_ENABLE_LOGGING
 #endif
 
+#ifdef WIN32
+#define COPY(destination, source, count) strncpy_s(destination, source, count)
+#else
+#define COPY(destination, source, count) strncpy(destination, source, count)
+#endif
+
 #include "scssdk.h"
 /**
  * \brief string size for all strings (most of them) the amount of fields in the shared memory field
